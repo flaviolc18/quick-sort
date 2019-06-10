@@ -1,42 +1,49 @@
 #include "quick-sort.h"
 #include "stack.cpp"
 
-QuickSort::QuickSort(int k)
+template <class T>
+QuickSort<T>::QuickSort(int k)
 {
   this->k = k;
 }
 
-void QuickSort::swap(int &a, int &b)
+template <class T>
+void QuickSort<T>::swap(T &a, T &b)
 {
-  int temp = a;
+  T temp = a;
   a = b;
   b = temp;
   this->n_mov++;
 }
 
-int QuickSort::get_pivot(int ini, int end, int *array)
+template <class T>
+T QuickSort<T>::get_pivot(int ini, int end, T *array)
 {
   return array[(ini + end) / 2];
 }
 
-unsigned long long QuickSort::get_n_comp()
+template <class T>
+unsigned long long QuickSort<T>::get_n_comp()
 {
   return this->n_comp;
 }
 
-unsigned long long QuickSort::get_n_mov()
+template <class T>
+unsigned long long QuickSort<T>::get_n_mov()
 {
   return this->n_mov;
 }
 
-void QuickSort::quick_sort(int *array, int size)
+template <class T>
+void QuickSort<T>::quick_sort(T *array, int size)
 {
   this->n_comp = 0;
   this->n_mov = 0;
   this->sort(0, size - 1, array, size);
 }
 
-void QuickSort::sort(int ini, int end, int *array, int size)
+template <class T>
+void QuickSort<T>::sort(int ini, int end, T *array, int size)
 {
 
   if (this->should_use_insertion_sort(ini, end + 1, size))
@@ -53,12 +60,13 @@ void QuickSort::sort(int ini, int end, int *array, int size)
     this->sort(i, end, array, size);
 }
 
-void QuickSort::partition(int ini, int end, int &i, int &j, int *array)
+template <class T>
+void QuickSort<T>::partition(int ini, int end, int &i, int &j, T *array)
 {
 
   i = ini;
   j = end;
-  int pivot = this->get_pivot(ini, end, array);
+  T pivot = this->get_pivot(ini, end, array);
 
   do
   {
@@ -81,10 +89,12 @@ void QuickSort::partition(int ini, int end, int &i, int &j, int *array)
   } while (i <= j);
 }
 
-void QuickSort::insertion_sort(int ini, int end, int *array)
+template <class T>
+void QuickSort<T>::insertion_sort(int ini, int end, T *array)
 {
 
-  int i, j, key;
+  int i, j;
+  T key;
   for (i = ini; i < end; i++)
   {
     key = array[i];
@@ -102,30 +112,39 @@ void QuickSort::insertion_sort(int ini, int end, int *array)
   }
 }
 
-bool QuickSort::should_use_insertion_sort(int ini, int end, int size)
+template <class T>
+bool QuickSort<T>::should_use_insertion_sort(int ini, int end, int size)
 {
   int sub_array_size = end - ini;
   return sub_array_size < (this->k * size) / 100;
 }
 
-int QuickSortFirstElement::get_pivot(int ini, int end, int *array)
+template <class T>
+T QuickSortFirstElement<T>::get_pivot(int ini, int end, T *array)
 {
   return array[ini];
 }
 
-QuickSortMedianOfThree::QuickSortMedianOfThree(int k) : QuickSort(k) {}
-int QuickSortMedianOfThree::get_pivot(int ini, int end, int *array)
+template <class T>
+QuickSortMedianOfThree<T>::QuickSortMedianOfThree(int k) : QuickSort<T>(k) {}
+
+template <class T>
+T QuickSortMedianOfThree<T>::get_pivot(int ini, int end, T *array)
 {
   int median_array[] = {array[ini], array[(ini + end) / 2], array[end]};
   this->insertion_sort(0, 3, median_array);
   return median_array[1];
 }
 
-QuickSort1Insertion::QuickSort1Insertion() : QuickSortMedianOfThree(1) {}
-QuickSort5Insertion::QuickSort5Insertion() : QuickSortMedianOfThree(5) {}
-QuickSort10Insertion::QuickSort10Insertion() : QuickSortMedianOfThree(10) {}
+template <class T>
+QuickSort1Insertion<T>::QuickSort1Insertion() : QuickSortMedianOfThree<T>(1) {}
+template <class T>
+QuickSort5Insertion<T>::QuickSort5Insertion() : QuickSortMedianOfThree<T>(5) {}
+template <class T>
+QuickSort10Insertion<T>::QuickSort10Insertion() : QuickSortMedianOfThree<T>(10) {}
 
-void QuickSortNonRecursive::sort(int ini, int end, int *array, int size)
+template <class T>
+void QuickSortNonRecursive<T>::sort(int ini, int end, T *array, int size)
 {
   int i, j;
   Stack<Item> stack = Stack<Item>();

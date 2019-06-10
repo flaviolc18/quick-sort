@@ -14,6 +14,7 @@ struct Item
   }
 };
 
+template <class T>
 class QuickSort
 {
 private:
@@ -22,7 +23,7 @@ private:
 public:
   QuickSort(int k = 0);
 
-  void quick_sort(int *array, int size);
+  void quick_sort(T *array, int size);
   unsigned long long get_n_comp();
   unsigned long long get_n_mov();
 
@@ -30,49 +31,55 @@ protected:
   unsigned long long n_comp;
   unsigned long long n_mov;
 
-  void partition(int ini, int end, int &i, int &j, int *array);
-  void insertion_sort(int ini, int end, int *array);
+  void partition(int ini, int end, int &i, int &j, T *array);
+  void insertion_sort(int ini, int end, T *array);
   bool should_use_insertion_sort(int ini, int end, int size);
-  void swap(int &a, int &b);
+  void swap(T &a, T &b);
 
-  virtual void sort(int ini, int end, int *array, int size);
-  virtual int get_pivot(int ini, int end, int *array);
+  virtual void sort(int ini, int end, T *array, int size);
+  virtual T get_pivot(int ini, int end, T *array);
 };
 
-class QuickSortFirstElement : public QuickSort
+template <class T>
+class QuickSortFirstElement : public QuickSort<T>
 {
-  virtual int get_pivot(int ini, int end, int *array);
+  virtual T get_pivot(int ini, int end, T *array);
 };
 
-class QuickSortMedianOfThree : public QuickSort
+template <class T>
+class QuickSortMedianOfThree : public QuickSort<T>
 {
-  virtual int get_pivot(int ini, int end, int *array);
+  virtual T get_pivot(int ini, int end, T *array);
 
 public:
   QuickSortMedianOfThree(int k = 0);
 };
 
-class QuickSort1Insertion : public QuickSortMedianOfThree
+template <class T>
+class QuickSort1Insertion : public QuickSortMedianOfThree<T>
 {
 public:
   QuickSort1Insertion();
 };
 
-class QuickSort5Insertion : public QuickSortMedianOfThree
+template <class T>
+class QuickSort5Insertion : public QuickSortMedianOfThree<T>
 {
 public:
   QuickSort5Insertion();
 };
 
-class QuickSort10Insertion : public QuickSortMedianOfThree
+template <class T>
+class QuickSort10Insertion : public QuickSortMedianOfThree<T>
 {
 public:
   QuickSort10Insertion();
 };
 
-class QuickSortNonRecursive : public QuickSort
+template <class T>
+class QuickSortNonRecursive : public QuickSort<T>
 {
-  virtual void sort(int ini, int end, int *array, int size);
+  virtual void sort(int ini, int end, T *array, int size);
 };
 
 #endif

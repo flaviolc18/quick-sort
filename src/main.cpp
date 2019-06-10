@@ -4,28 +4,26 @@
 #include <random>
 #include <chrono>
 
-#include "quick-sort.h"
-#include "lista.cpp"
+#include "quick-sort.cpp"
 
-#define MAX_NUMBER 500000
 #define NUMBER_OF_TESTS 21
 
-std::unique_ptr<QuickSort> get_quick_sort(std::string variacao)
+QuickSort<int> *get_quick_sort(std::string variacao)
 {
   if (variacao == "QC")
-    return std::unique_ptr<QuickSort>{new QuickSort()};
+    return new QuickSort<int>();
   if (variacao == "QPE")
-    return std::unique_ptr<QuickSort>{new QuickSortFirstElement()};
+    return new QuickSortFirstElement<int>();
   if (variacao == "QM3")
-    return std::unique_ptr<QuickSort>{new QuickSortMedianOfThree()};
+    return new QuickSortMedianOfThree<int>();
   if (variacao == "QI1")
-    return std::unique_ptr<QuickSort>{new QuickSort1Insertion()};
+    return new QuickSort1Insertion<int>();
   if (variacao == "QI5")
-    return std::unique_ptr<QuickSort>{new QuickSort5Insertion()};
+    return new QuickSort5Insertion<int>();
   if (variacao == "QI10")
-    return std::unique_ptr<QuickSort>{new QuickSort10Insertion()};
+    return new QuickSort10Insertion<int>();
   if (variacao == "QNR")
-    return std::unique_ptr<QuickSort>{new QuickSort()};
+    return new QuickSort<int>();
   throw std::invalid_argument("'variaçao' should be one of the allowed values [QC, QPE, QM3, QI1, QI5, QI10, QNR]");
 }
 
@@ -33,7 +31,7 @@ void generate_random_array(int *array, int size)
 {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(1, MAX_NUMBER);
+  std::uniform_int_distribution<> dis(1, size);
 
   for (int i = 0; i < size; i++)
     array[i] = dis(gen);
@@ -62,7 +60,7 @@ void setup_array(std::string tipo, int size, int *array)
   throw std::invalid_argument("'tipo' should be one of the allowed values [Ale, OrdC, OrdD]");
 }
 
-std::chrono::duration<long, std::micro> get_execution_time(QuickSort *qs, int *array, int tamanho)
+std::chrono::duration<long, std::micro> get_execution_time(QuickSort<int> *qs, int *array, int tamanho)
 {
   std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
   qs->quick_sort(array, tamanho);
@@ -79,24 +77,34 @@ void print_array(int *arr, int size)
   std::cout << std::endl;
 }
 
+std::chrono::duration<long, std::micro> get_median(std::chrono::duration<long, std::micro> *array, int size)
+{
+  QuickSort<std::chrono::duration<long, std::micro>> qs = QuickSort<std::chrono::duration<long, std::micro>>();
+
+  qs.quick_sort(array, size);
+
+  return array[(size / 2) + 1];
+}
+
 void process_input(std::string variacao, std::string tipo, int tamanho, bool exibir_vetor)
 {
-  std::unique_ptr<QuickSort> qs = get_quick_sort(variacao);
+  std::unique_ptr<QuickSort<int>> qs = std::unique_ptr<QuickSort<int>>(get_quick_sort(variacao));
 
   int arrays[NUMBER_OF_TESTS][tamanho] = {0};
   unsigned long long mean_n_comp = 0, mean_n_mov = 0;
 
-  Lista<std::chrono::duration<long, std::micro>> median_list = Lista<std::chrono::duration<long, std::micro>>();
+  std::chrono::duration<long, std::micro> execution_times[NUMBER_OF_TESTS];
 
   for (int i = 0; i < NUMBER_OF_TESTS; i++)
   {
     setup_array(tipo, tamanho, arrays[i]);
 
-    median_list.insert_sorted(get_execution_time(qs.get(), arrays[i], tamanho));
+    execution_times[i] = get_execution_time(qs.get(), arrays[i], tamanho);
     mean_n_comp += qs->get_n_comp();
     mean_n_mov += qs->get_n_mov();
   }
-  auto median = median_list.get_at(11);
+
+  auto median = get_median(execution_times, NUMBER_OF_TESTS);
   mean_n_comp /= NUMBER_OF_TESTS;
   mean_n_mov /= NUMBER_OF_TESTS;
 
