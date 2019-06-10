@@ -94,8 +94,11 @@ void QuickSort::insertion_sort(int ini, int end, int *array)
     {
       array[j + 1] = array[j];
       j = j - 1;
+      this->n_comp++;
+      this->n_mov++;
     }
     array[j + 1] = key;
+    this->n_mov++;
   }
 }
 
