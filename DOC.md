@@ -48,15 +48,17 @@ No geral, o programa desenvolvido aceita uma entrada do tipo `./nomedoprograma <
 
 ### **2.2 Classes:**
 
-- QuickSort
-- QuickSortFirstElement
-- QuickSortMedianOfThree
-- QuickSort1Insertion
-- QuickSort5Insertion
-- QuickSort10Insertion
-- QuickSortNonRecursive
+- Diagrama de Classes UML
 
-### **2.3 Algoritmos:**
+![Diagramas de Classes UML do Programa](uml-ed.jpeg)
+
+### **2.3 Principais Funções:**
+
+- `void quick_sort(T *array, int size)`: esta função simplismente inicializa as variáveis acumuladoras dos números de comparações e movimentações com elementos do vetor e faz a primeira chamada da função recursiva `sort()`.
+- `virtual void sort(int ini, int end, T *array, int size)`: função recursiva executada para cada partição criada pela chamada do procedimento `partition()`, esta é declarada como um método virtual pois a sub-classe `QuickSortNonRecursive` utiliza sua implementação não recursiva;
+- `void partition(int ini, int end, int &i, int &j, T *array)`: principal função do algoritmo, aqui é onde acontece a separação (partição) dos elementos do vetor que são maiores e menores do que um pivot especificamente escolhido. Tal procedimento é executado armazenando 2 indices (um que começa na posição inicial e outro na final do vetor) que são usados para iterar sobre os elementos e efetuar a troca de suas posições quando necessário.
+- `void insertion_sort(int ini, int end, T *array)`: esta função é uma implementação do algoritmo Insertion Sort que é usado de maneira híbrida com o Quick Sort nas classes `QuickSortXInsertion` onde X pode assumir o valor de 1, 5 ou 10 como descrito acima.
+- `virtual T get_pivot(int ini, int end, T *array)`: função virtual pois podemos ter 3 diferentes métodos de obter tal pivot, cada uma dessas 3 maneiras é implementada nas seguintes classes `QuickSort`, `QuickSortFirstElement`, `QuickSortMedianOfThree`.
 
 ### **2.4 Compilador:**
 
