@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title></title>
+      <meta charset="utf-8" />
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+      <style>
+        .wrapper {
+          text-align: center;
+        }
+        .charts {
+          display: inline-block;
+          width: 75%;
+        }
+        h1	{
+          font-family: arial, sans-serif;
+          font-size: 34px;
+          font-weight: bold;
+          margin-top: 10px;
+          margin-bottom: 1px;
+          text-decoration: underline;
+        }        
+        hr {
+          display: block;
+          height: 1px;
+          border: 0;
+          border-top: 1px solid #ccc;
+          margin: 1em 0;
+          width: 80%;
+          display: inline-block;
+          text-align: center;
+
+          padding: 0;
+        }
+        canvas {
+          background-color: white;
+          margin-top: 30px;
+        }
+      </style>
+    </head>
+    <body class="container">
+      <div class="wrapper">
+        <div class="charts">
+          <h1>Tempo de Execução</h1>
+          <canvas id="timeAle"></canvas>
+          <canvas id="timeOrdC"></canvas>
+          <canvas id="timeOrdD"></canvas>
+        </div>
+        <hr/>
+        <div class="charts">
+          <h1>Número de Comparações</h1>
+          <canvas id="nCompAle"></canvas>
+          <canvas id="nCompOrdC"></canvas>
+          <canvas id="nCompOrdD"></canvas>
+        </div>
+        <hr/>
+        <div class="charts">
+        <h1>Número de Movimentações</h1>
+        <canvas id="nMovAle"></canvas>
+        <canvas id="nMovOrdC"></canvas>
+        <canvas id="nMovOrdD"></canvas>
+      </div>
+      </div>
+       
+  <script>
+    var ctx = document.getElementById("timeAle").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":[0.003159,0.006547,0.010405,0.014035,0.017704,0.021517,0.025454,0.029389,0.033223,0.036898]},{"label":"QPE","backgroundColor":"#e6194B","data":[0.003237,0.006658,0.0107,0.014154,0.018112,0.02183,0.026033,0.029667,0.033461,0.03765]},{"label":"QM3","backgroundColor":"#9A6324","data":[0.003467,0.007048,0.011228,0.015107,0.019123,0.023235,0.02731,0.031494,0.035636,0.039908]},{"label":"QI1","backgroundColor":"#3cb44b","data":[0.004162,0.01305,0.028851,0.047226,0.071871,0.099999,0.134902,0.174889,0.219526,0.267775]},{"label":"QI5","backgroundColor":"#4363d8","data":[0.013907,0.053341,0.121796,0.207326,0.322791,0.466599,0.625381,0.82025,1.027429,1.288468]},{"label":"QI10","backgroundColor":"#aaffc3","data":[0.02662,0.103851,0.242723,0.408192,0.656376,0.886632,1.27814,1.633104,2.04761,2.557591]},{"label":"QNR","backgroundColor":"#911eb4","data":[0.003171,0.006708,0.010887,0.014073,0.017744,0.021441,0.025418,0.029142,0.033179,0.038789]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Aleatórios",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("timeOrdC").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":[0.000582,0.001212,0.001757,0.002544,0.002958,0.003678,0.004438,0.005257,0.005709,0.007073]},{"label":"QPE","backgroundColor":"#e6194B","data":[0.645115,2.577663,5.952267,10.562964,16.532368,23.791883,32.345053,42.240687,53.473184,66.154202]},{"label":"QM3","backgroundColor":"#9A6324","data":[0.002426,0.002033,0.001958,0.002854,0.003311,0.004078,0.005034,0.005922,0.006343,0.006841]},{"label":"QI1","backgroundColor":"#3cb44b","data":[0.000254,0.000494,0.000749,0.000997,0.001231,0.001478,0.001726,0.001974,0.00242,0.002461]},{"label":"QI5","backgroundColor":"#4363d8","data":[0.000193,0.000386,0.000594,0.000777,0.000968,0.001181,0.002062,0.002109,0.002249,0.002168]},{"label":"QI10","backgroundColor":"#aaffc3","data":[0.000181,0.00036,0.001721,0.002245,0.001936,0.001024,0.001794,0.001331,0.001834,0.001735]},{"label":"QNR","backgroundColor":"#911eb4","data":[0.000687,0.001354,0.001772,0.002609,0.002962,0.003706,0.004461,0.005253,0.00577,0.006168]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Crescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("timeOrdD").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":[0.00086,0.001237,0.001847,0.002605,0.003067,0.00376,0.004549,0.005403,0.006854,0.006331]},{"label":"QPE","backgroundColor":"#e6194B","data":[0.6456,2.596817,5.944064,10.566813,16.543943,23.78748,32.45688,42.270794,53.489943,66.0409]},{"label":"QM3","backgroundColor":"#9A6324","data":[0.32329,1.326293,2.974654,5.286578,8.259865,11.890672,16.232324,21.133824,26.746747,33.028792]},{"label":"QI1","backgroundColor":"#3cb44b","data":[0.323623,1.377735,2.966458,5.286436,8.259297,11.893927,16.188015,21.145021,26.754842,33.047525]},{"label":"QI5","backgroundColor":"#4363d8","data":[0.324128,1.379218,2.982575,5.303508,8.304928,11.930673,16.971553,21.545501,26.841025,33.126684]},{"label":"QI10","backgroundColor":"#aaffc3","data":[0.327421,1.389469,3.011616,5.351217,8.362843,12.039328,16.386884,21.466814,27.086617,33.437922]},{"label":"QNR","backgroundColor":"#911eb4","data":[0.001875,0.00189,0.0018,0.002624,0.003065,0.003803,0.004601,0.005373,0.005858,0.006397]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Decrescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nCompAle").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["1048860","2207086","3470473","4734355","5969533","7419218","8689988","9931618","11393283","12721047"]},{"label":"QPE","backgroundColor":"#e6194B","data":["1167569","2526516","3876675","5308570","6794074","8296333","9770849","11292082","12833307","14533655"]},{"label":"QM3","backgroundColor":"#9A6324","data":["995088","2131246","3292547","4494172","5705038","6953003","8252118","9486115","10775541","12013706"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["4704181","17909320","39306864","69810156","108563029","154862082","212644163","276958780","348658454","427229829"]},{"label":"QI5","backgroundColor":"#4363d8","data":["21452606","85460132","187164180","337235717","534583437","769879991","1047237353","1355019498","1725830757","2141561728"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["42764170","170808106","381827274","678357746","1085150331","1480442909","2115925523","2725000844","3452088154","4145696439"]},{"label":"QNR","backgroundColor":"#911eb4","data":["1041346","2210335","3471030","4741679","5990986","7355648","8656866","10008873","11262990","12800202"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Aleatórios",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nCompOrdC").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["750015","1600016","2456803","3400017","4250017","5213588","6213588","7200018","8100018","9000018"]},{"label":"QPE","backgroundColor":"#e6194B","data":["1250074998","5000149998","11250224998","20000299998","31250374998","45000449998","61250524998","80000599998","101250674998","125000749998"]},{"label":"QM3","backgroundColor":"#9A6324","data":["750015","1600016","2456803","3400017","4250017","5213588","6213588","7200018","8100018","9000018"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["350007","700007","1050007","1400007","1750007","2100007","2450007","2800007","3150007","3500007"]},{"label":"QI5","backgroundColor":"#4363d8","data":["250005","500005","750005","1000005","1250005","1500005","1750005","2000005","2250005","2500005"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["200004","400004","600004","800004","1000004","1200004","1400004","1600004","1800004","2000004"]},{"label":"QNR","backgroundColor":"#911eb4","data":["750015","1600016","2456803","3400017","4250017","5213588","6213588","7200018","8100018","9000018"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Crescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nCompOrdD").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["750030","1600032","2456822","3400034","4250034","5213608","6213608","7200036","8100036","9000036"]},{"label":"QPE","backgroundColor":"#e6194B","data":["1250099997","5000199997","11250299997","20000399997","31250499997","45000599997","61250699997","80000799997","101250899997","125000999997"]},{"label":"QM3","backgroundColor":"#9A6324","data":["625174995","2500349995","5625524995","10000699995","15625874995","22501049995","30626224995","40001399995","50626574995","62501749995"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["625160259","2500445509","5625855759","10001391009","15627051259","22502836509","30628746759","40004782009","50630942259","62507227509"]},{"label":"QI5","backgroundColor":"#4363d8","data":["626651259","2506427509","5639328759","10025355009","15664506259","22556782509","30702183759","40100710009","50752361259","62657137509"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["631327509","2525155009","5681482509","10100310009","15781637509","22725465009","30931792509","40400620009","51131947509","63125775009"]},{"label":"QNR","backgroundColor":"#911eb4","data":["750030","1600032","2456822","3400034","4250034","5213608","6213608","7200036","8100036","9000036"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Decrescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nMovAle").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["199112","422745","652919","889040","1132473","1373747","1625145","1876112","2123323","2376662"]},{"label":"QPE","backgroundColor":"#e6194B","data":["200711","423941","656779","895335","1138032","1381606","1633086","1878990","2132703","2384268"]},{"label":"QM3","backgroundColor":"#9A6324","data":["384245","791098","1208211","1630849","2057596","2486921","2918482","3355400","3792197","4232972"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["4388956","17283392","38381345","68582275","107047367","153042173","210467335","274464651","345799429","424085453"]},{"label":"QI5","backgroundColor":"#4363d8","data":["21257069","85083522","186573741","336434646","533597050","768706703","1045806807","1353433182","1724070307","2139648658"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["42617852","170512290","381402818","677777148","1084444562","1479532154","2114936103","2723790503","3450776417","4144191563"]},{"label":"QNR","backgroundColor":"#911eb4","data":["199567","422080","653211","889702","1131674","1374094","1623805","1872856","2125632","2376841"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Aleatórios",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nMovOrdC").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["32767","65535","84464","131071","131071","168928","218928","262143","262143","262143"]},{"label":"QPE","backgroundColor":"#e6194B","data":["49999","99999","149999","199999","249999","299999","349999","399999","449999","499999"]},{"label":"QM3","backgroundColor":"#9A6324","data":["131068","262140","337856","524284","524284","675712","875712","1048572","1048572","1048572"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["50381","100381","150381","200381","250381","300381","350381","400381","450381","500381"]},{"label":"QI5","backgroundColor":"#4363d8","data":["50093","100093","150093","200093","250093","300093","350093","400093","450093","500093"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["50045","100045","150045","200045","250045","300045","350045","400045","450045","500045"]},{"label":"QNR","backgroundColor":"#911eb4","data":["32767","65535","84464","131071","131071","168928","218928","262143","262143","262143"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Crescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+ 
+  <script>
+    var ctx = document.getElementById("nMovOrdD").getContext("2d");
+    var chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          50000,
+          100000,
+          150000,
+          200000,
+          250000,
+          300000,
+          350000,
+          400000,
+          450000,
+          500000
+        ],
+        datasets: [{"label":"QC","backgroundColor":"#469990","data":["57765","115533","159463","231069","256069","318927","393927","462141","487141","512141"]},{"label":"QPE","backgroundColor":"#e6194B","data":["49999","99999","149999","199999","249999","299999","349999","399999","449999","499999"]},{"label":"QM3","backgroundColor":"#9A6324","data":["224995","449995","674995","899995","1124995","1349995","1574995","1799995","2024995","2249995"]},{"label":"QI1","backgroundColor":"#3cb44b","data":["297011","844011","1641011","2688011","3985011","5532011","7329011","9376011","11673011","14220011"]},{"label":"QI5","backgroundColor":"#4363d8","data":["3285011","12820011","28605011","50640011","78925011","113460011","154245011","201280011","254565011","314100011"]},{"label":"QI10","backgroundColor":"#aaffc3","data":["12645011","50290011","112935011","200580011","313225011","450870011","613515011","801160011","1013805011","1251450011"]},{"label":"QNR","backgroundColor":"#911eb4","data":["57765","115533","159463","231069","256069","318927","393927","462141","487141","512141"]}]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Vetores Decrescentes",
+          fontSize: 26,
+          color: "#999999"
+        },
+        scales: {
+          xAxes: [{
+              categoryPercentage: 0.6,
+              barPercentage: 0.8,
+          }],
+          yAxes: [{
+            minBarLength: 2,
+            ticks: {
+              beginAtZero:true,
+          }
+        }]
+        }
+      }
+    });
+  </script>  
+
+    </body>
+  </html>
