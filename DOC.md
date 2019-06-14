@@ -40,17 +40,21 @@ No geral, o programa desenvolvido aceita uma entrada do tipo `./nomedoprograma <
 ### **2.1 Estruturas de dados:**
 
 - **Pilha:**
-  - **Uso**: armazenar os cursos ordenados por ordem de chegada em que o índice do vetor representa o ID do curso.
-  - **Motivo de escolha:** acesso constante a qualuer elemento pelo índice (ID) e os elementos não teriam sua ordem alterada ou seriam removidos uma vez inseridos no vetor.
-- **Lista:**
-  - **Uso**: armazenar os cursos ordenados por ordem de chegada em que o índice do vetor representa o ID do curso.
-  - **Motivo de escolha:** acesso constante a qualuer elemento pelo índice (ID) e os elementos não teriam sua ordem alterada ou seriam removidos uma vez inseridos no vetor.
+  - **Uso**: memória auxiliar para execução do Quicksort não recursivo.
+  - **Motivo de escolha:** característica FILO (first in last out) que facilita a execução do algoritmo, operações push e pop com complexidade de tempo constantes.
 - **Vetor:**
-
-  - **Uso**: armazenar os cursos ordenados por ordem de chegada em que o índice do vetor representa o ID do curso.
-  - **Motivo de escolha:** acesso constante a qualuer elemento pelo índice (ID) e os elementos não teriam sua ordem alterada ou seriam removidos uma vez inseridos no vetor.
+  - **Uso**: armazenar os elementos que serão ordenados pelo algoritmo.
+  - **Motivo de escolha:** estrutura a ser ordenada, exigida pela descrição do trabalho
 
 ### **2.2 Classes:**
+
+- QuickSort
+- QuickSortFirstElement
+- QuickSortMedianOfThree
+- QuickSort1Insertion
+- QuickSort5Insertion
+- QuickSort10Insertion
+- QuickSortNonRecursive
 
 ### **2.3 Algoritmos:**
 
@@ -68,10 +72,4 @@ O compilador usado foi o `g++` com a flag `-std=c++14`
 
 ## 4 Conclusão:
 
-- Atividade prática super interessante pois serviu para fixar os conceitos vistos em sala tais como as estruturas de dados usadas e a análise de complexidade. Além disso, foi possível rever os conceitos de programação orientada a objetos e a sintaxe da linguagem C++, vistos na disciplina PDS2. Uma das principais dificuldades na resolução do problema foi a implementação dos casos de desempate, o que foi resolvido incluindo várias checagens com condicionais para que a ordenação dos alunos fique correta.
-
 ## 5 Bibliografia:
-
-- http://stackoverflow.com/
-- https://www.wikipedia.org/
-- https://github.com

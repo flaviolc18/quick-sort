@@ -75,11 +75,13 @@ void QuickSort<T>::partition(int ini, int end, int &i, int &j, T *array)
       this->n_comp++;
       (i)++;
     }
+    this->n_comp++;
     while (pivot < array[j])
     {
       this->n_comp++;
       (j)--;
     }
+    this->n_comp++;
     if (i <= j)
     {
       swap(array[i], array[j]);
