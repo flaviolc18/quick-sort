@@ -17,7 +17,7 @@ Decoder::Decoder(std::ifstream &file)
 
 Decoder::~Decoder()
 {
-  this->post_order(this->root, [](Node *node) { free(node); });
+  this->post_order(this->root, [](Node *node) { delete node; });
 }
 
 Node *Decoder::insert(Node *node, std::string key, std::string val, int pos)
