@@ -80,4 +80,6 @@ void Inst::meeting()
     std::cout << m.id << " ";
   });
   std::cout << std::endl;
+
+  delete sorted;
 }
