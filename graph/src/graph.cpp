@@ -8,7 +8,7 @@ Graph<T>::Graph(int v)
   this->vertex = v;
 
   this->nodes = new nodeg<T> *[v];
-  this->adj = new List<T> *[v];
+  this->adj = new List<int> *[v];
 
   for (int i = 0; i < v; i++)
   {
@@ -67,6 +67,19 @@ void Graph<T>::set_edge(int v1, int v2)
 }
 
 template <class T>
+void Graph<T>::remove_edge(int v1, int v2)
+{
+  if (this->has_edge(v1, v2))
+  {
+    int pos = this->adj[v1]->pos(v2);
+    if (pos != -1)
+    {
+      this->adj[v1]->pop_at(pos);
+    }
+  }
+}
+
+template <class T>
 void Graph<T>::bfs(int v, std::function<void(T &)> fn)
 {
   int visited[this->vertex] = {0};
@@ -117,6 +130,32 @@ void Graph<T>::dfs(int v, std::function<void(T &)> fn)
 }
 
 template <class T>
+void Graph<T>::topological_sort_helper(int v, int visited[], List<T> *stack)
+{
+  visited[v] = 1;
+
+  this->adj[v]->each([&, this](int i) {
+    if (!visited[i])
+      this->topological_sort_helper(i, visited, stack);
+  });
+
+  stack->push_last(this->nodes[v]->value);
+}
+
+template <class T>
+List<T> *Graph<T>::topological_sort()
+{
+  List<T> *stack = new List<T>();
+  int visited[this->vertex] = {0};
+
+  for (int i = 0; i < this->vertex; i++)
+    if (!visited[i] && !this->nodes[i]->empty)
+      topological_sort_helper(i, visited, stack);
+
+  return stack;
+}
+
+template <class T>
 bool Graph<T>::cyclic_helper(int v, int visited[], int rec_stack[])
 {
   bool ans = false;
@@ -149,16 +188,38 @@ bool Graph<T>::cyclic()
   return false;
 }
 
+// TODO: find a better way to handle this, this function should be responsible for deleting the dynamically allocated graph
 template <class T>
-void Graph<T>::print()
+Graph<T> *Graph<T>::transpose()
+{
+  Graph<T> *t = new Graph<T>(this->vertex);
+
+  for (int i = 0; i < this->vertex; i++)
+    if (!this->nodes[i]->empty)
+      t->new_node(i, this->nodes[i]->value);
+
+  for (int i = 0; i < this->vertex; i++)
+    if (!this->nodes[i]->empty)
+      this->adj[i]->each([&](int j) {
+        t->set_edge(j, i);
+      });
+
+  return t;
+}
+
+template <class T>
+void Graph<T>::print(std::function<std::string(T &)> to_string)
 {
 
   for (int i = 0; i < this->vertex; i++)
   {
     if (!this->nodes[i]->empty)
     {
-      std::cout << "[ " << i << " ]";
-      this->adj[i]->each([](T &val) { std::cout << " -> [ " << val << " ]"; });
+      std::cout << "[ " << i << ":" << to_string(this->nodes[i]->value) << " ]";
+
+      this->adj[i]->each([&](int &i) {
+        std::cout << " -> [ " << i << " ]";
+      });
       std::cout << std::endl;
     }
   }

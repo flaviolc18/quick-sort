@@ -40,7 +40,8 @@ Node<T> *List<T>::get_node_at(int position)
   if (position < 0 || position >= this->_length)
   {
     //FIXME: implementar exceção
-    throw "não pode migão";
+    throw std::invalid_argument("não pode migão");
+    ;
   }
 
   int distancia_head = position + 1;
@@ -116,6 +117,7 @@ template <class T>
 T List<T>::pop_at(int position)
 {
   Node<T> *node = this->get_node_at(position);
+
   Node<T> *previous_node = node->previous;
   Node<T> *next_node = node->next;
 
@@ -156,14 +158,23 @@ int List<T>::length()
 }
 
 template <class T>
-bool List<T>::has(T value)
+int List<T>::pos(const T &value)
 {
-  Node<T> *node = this->head;
+  int count = 0;
+  Node<T> *node = this->head->next;
   while (node != this->tail && node->value != value)
   {
     node = node->next;
+    count++;
   }
-  return node != this->tail;
+  return node == this->tail ? -1 : count;
+}
+
+template <class T>
+bool List<T>::has(const T &value)
+{
+
+  return this->pos(value) != -1;
 }
 
 template <class T>
@@ -175,5 +186,17 @@ void List<T>::each(std::function<void(T &)> fn)
   {
     fn(node->value);
     node = node->next;
+  }
+}
+
+template <class T>
+void List<T>::each_rev(std::function<void(T &)> fn)
+{
+
+  Node<T> *node = this->tail->previous;
+  while (node != this->head)
+  {
+    fn(node->value);
+    node = node->previous;
   }
 }

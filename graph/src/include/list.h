@@ -37,8 +37,10 @@ public:
 
   int length();
   bool empty();
-  bool has(T value);
+  bool has(const T &value);
+  int pos(const T &value);
   void each(std::function<void(T &)> fn);
+  void each_rev(std::function<void(T &)> fn);
 
   void push_first(T value);
   void push_last(T value);

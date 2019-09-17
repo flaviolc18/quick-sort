@@ -3,7 +3,7 @@ SRCDIR := src
 BINDIR := bin
 TESTDIR := test
 
-SRC := $(shell find $(SRCDIR) -type f -name *.cpp)
+SRC := src/*.cpp
 
 CFLAGS := -g -Wall -O3 -std=c++14
 INC := -I $(SRCDIR)/include/

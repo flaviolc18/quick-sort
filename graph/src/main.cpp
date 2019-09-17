@@ -1,39 +1,51 @@
 #include <iostream>
+#include <string>
+#include <fstream>
 
-#include "list.cpp"
-#include "graph.cpp"
+#include "inst.h"
 
-int main()
+int main(int argc, char **argv)
 {
-  Graph<int> g = Graph<int>(8);
-  g.new_node(0, 0);
-  g.new_node(1, 1);
-  g.new_node(2, 2);
-  g.new_node(3, 3);
-  g.new_node(4, 4);
-  g.new_node(5, 5);
-  g.new_node(6, 6);
-  g.new_node(7, 7);
+  if (argc < 2)
+  {
+    return 0;
+  }
 
-  g.set_edge(0, 1);
-  g.set_edge(0, 5);
-  g.set_edge(0, 2);
-  g.set_edge(1, 3);
-  g.set_edge(2, 4);
-  g.set_edge(3, 5);
-  g.set_edge(3, 7);
-  g.set_edge(4, 6);
-  g.set_edge(6, 3);
-  g.set_edge(7, 0);
+  std::ifstream file;
+  file.open(argv[1]);
 
-  g.bfs(0, [](int &val) { std::cout << " " << val << " "; });
-  std::cout << std::endl;
+  if (file.is_open())
+  {
 
-  g.dfs(0, [](int &val) { std::cout << " " << val << " "; });
-  std::cout << std::endl;
+    int N, M, I;
+    file >> N >> M >> I;
 
-  std::cout << "has cycle: = " << g.cyclic() << std::endl;
+    Graph<member> graph = Graph<member>(N + 1);
 
-  g.print();
+    for (int i = 1; i <= N; i++)
+    {
+      member m;
+      file >> m.age;
+      m.id = i;
+      graph.new_node(i, m);
+    }
+
+    for (int e1, e2, i = 0; i < M; i++)
+    {
+      file >> e1 >> e2;
+      graph.set_edge(e1, e2);
+    }
+
+    Inst inst = Inst(&graph);
+    for (int i = 0; i < I; i++)
+    {
+      inst.exec_inst(file);
+    }
+
+    graph.print([](member &m) { return std::to_string(m.age); });
+
+    file.close();
+  }
+
   return 0;
 }

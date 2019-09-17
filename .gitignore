@@ -1,4 +1,4 @@
 .vscode
 */bin
-*/benchmarks/node_modules
+*/benchmarks/node_modulesz
 */benchmarks/package-lock.json
