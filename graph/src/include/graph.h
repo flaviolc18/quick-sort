@@ -4,12 +4,12 @@
 #include "../list.cpp"
 
 template <typename T>
-struct nodeg
+struct GraphNode
 {
   T value;
   bool empty;
 
-  nodeg()
+  GraphNode()
   {
     this->empty = true;
   };
@@ -21,10 +21,10 @@ class Graph
 private:
   int vertex;
   List<int> **adj;
-  nodeg<T> **nodes;
+  GraphNode<T> **nodes;
 
   bool cyclic_helper(int v, int visited[], int rec_stack[]);
-  void topological_sort_helper(int v, int visited[], List<T> *stack);
+  void topological_sort_helper(int v, int visited[], std::shared_ptr<List<T>> stack);
 
 public:
   Graph(int v);
@@ -40,10 +40,10 @@ public:
 
   void bfs(int v, std::function<void(T &)> fn);
   void dfs(int v, std::function<void(T &)> fn);
-  List<T> *topological_sort();
+  std::shared_ptr<List<T>> topological_sort();
   bool cyclic();
 
-  Graph<T> *transpose();
+  std::unique_ptr<Graph<T>> transpose();
 
   void print(std::function<std::string(T &)> to_string);
 };

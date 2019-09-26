@@ -2,15 +2,16 @@
 #define LIST_H
 
 #include <functional>
+#include <memory>
 
 template <class T>
-struct Node
+struct ListNode
 {
   T value;
-  Node *next;
-  Node *previous;
+  ListNode *next;
+  ListNode *previous;
 
-  Node(T value)
+  ListNode(T value)
   {
     this->value = value;
     this->next = nullptr;
@@ -23,13 +24,13 @@ class List
 {
 private:
   int _length;
-  Node<T> *head;
-  Node<T> *tail;
+  ListNode<T> *head;
+  ListNode<T> *tail;
 
 protected:
-  Node<T> *get_head();
-  Node<T> *get_node_at(int position);
-  Node<T> *get_tail();
+  ListNode<T> *get_head();
+  ListNode<T> *get_node_at(int position);
+  ListNode<T> *get_tail();
 
 public:
   List();

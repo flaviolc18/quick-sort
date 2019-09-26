@@ -7,12 +7,12 @@ Graph<T>::Graph(int v)
 {
   this->vertex = v;
 
-  this->nodes = new nodeg<T> *[v];
+  this->nodes = new GraphNode<T> *[v];
   this->adj = new List<int> *[v];
 
   for (int i = 0; i < v; i++)
   {
-    this->nodes[i] = new nodeg<T>();
+    this->nodes[i] = new GraphNode<T>();
     this->adj[i] = new List<int>();
   }
 }
@@ -130,7 +130,7 @@ void Graph<T>::dfs(int v, std::function<void(T &)> fn)
 }
 
 template <class T>
-void Graph<T>::topological_sort_helper(int v, int visited[], List<T> *stack)
+void Graph<T>::topological_sort_helper(int v, int visited[], std::shared_ptr<List<T>> stack)
 {
   visited[v] = 1;
 
@@ -143,16 +143,16 @@ void Graph<T>::topological_sort_helper(int v, int visited[], List<T> *stack)
 }
 
 template <class T>
-List<T> *Graph<T>::topological_sort()
+std::shared_ptr<List<T>> Graph<T>::topological_sort()
 {
-  List<T> *stack = new List<T>();
+  auto stack = std::make_shared<List<T>>();
   int visited[this->vertex] = {0};
 
   for (int i = 0; i < this->vertex; i++)
     if (!visited[i] && !this->nodes[i]->empty)
       topological_sort_helper(i, visited, stack);
 
-  return stack;
+  return std::move(stack);
 }
 
 template <class T>
@@ -188,11 +188,10 @@ bool Graph<T>::cyclic()
   return false;
 }
 
-// TODO: find a better way to handle this, this function should be responsible for deleting the dynamically allocated graph
 template <class T>
-Graph<T> *Graph<T>::transpose()
+std::unique_ptr<Graph<T>> Graph<T>::transpose()
 {
-  Graph<T> *t = new Graph<T>(this->vertex);
+  auto t = std::make_unique<Graph<T>>(this->vertex);
 
   for (int i = 0; i < this->vertex; i++)
     if (!this->nodes[i]->empty)
@@ -204,7 +203,7 @@ Graph<T> *Graph<T>::transpose()
         t->set_edge(j, i);
       });
 
-  return t;
+  return std::move(t);
 }
 
 template <class T>

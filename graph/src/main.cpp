@@ -20,11 +20,11 @@ int main(int argc, char **argv)
     int N, M, I;
     file >> N >> M >> I;
 
-    Graph<member> graph = Graph<member>(N + 1);
+    Graph<Member> graph = Graph<Member>(N + 1);
 
     for (int i = 1; i <= N; i++)
     {
-      member m;
+      Member m;
       file >> m.age;
       m.id = i;
       graph.new_node(i, m);
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
       inst.exec_inst(file);
     }
 
-    graph.print([](member &m) { return std::to_string(m.age); });
+    graph.print([](Member &m) { return std::to_string(m.age); });
 
     file.close();
   }

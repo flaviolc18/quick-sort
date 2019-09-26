@@ -3,8 +3,8 @@
 template <class T>
 List<T>::List()
 {
-  this->head = new Node<T>(T());
-  this->tail = new Node<T>(T());
+  this->head = new ListNode<T>(T());
+  this->tail = new ListNode<T>(T());
 
   this->head->next = this->tail;
   this->tail->previous = this->head;
@@ -17,25 +17,27 @@ List<T>::~List()
 {
   while (this->head->next != this->tail)
   {
-    Node<T> *it = this->head->next;
+    ListNode<T> *it = this->head->next;
     this->head->next = this->head->next->next;
-    free(it);
+    delete it;
   }
+  delete this->head;
+  delete this->tail;
 }
 
 template <class T>
-Node<T> *List<T>::get_head()
+ListNode<T> *List<T>::get_head()
 {
   return this->head;
 };
 template <class T>
-Node<T> *List<T>::get_tail()
+ListNode<T> *List<T>::get_tail()
 {
   return this->tail;
 };
 
 template <class T>
-Node<T> *List<T>::get_node_at(int position)
+ListNode<T> *List<T>::get_node_at(int position)
 {
   if (position < 0 || position >= this->_length)
   {
@@ -49,7 +51,7 @@ Node<T> *List<T>::get_node_at(int position)
 
   if (distancia_head <= distancia_tail)
   {
-    Node<T> *node = this->head;
+    ListNode<T> *node = this->head;
     for (int i = 0; i <= position; i++)
     {
       node = node->next;
@@ -58,7 +60,7 @@ Node<T> *List<T>::get_node_at(int position)
   }
   else
   {
-    Node<T> *node = this->tail;
+    ListNode<T> *node = this->tail;
     for (int i = this->_length; i > position; i--)
     {
       node = node->previous;
@@ -88,7 +90,7 @@ T List<T>::last()
 template <class T>
 void List<T>::push_first(T value)
 {
-  Node<T> *new_node = new Node<T>(value);
+  ListNode<T> *new_node = new ListNode<T>(value);
 
   new_node->next = this->head->next;
   new_node->previous = this->head;
@@ -102,7 +104,7 @@ void List<T>::push_first(T value)
 template <class T>
 void List<T>::push_last(T value)
 {
-  Node<T> *new_node = new Node<T>(value);
+  ListNode<T> *new_node = new ListNode<T>(value);
 
   new_node->next = this->tail;
   new_node->previous = this->tail->previous;
@@ -116,10 +118,10 @@ void List<T>::push_last(T value)
 template <class T>
 T List<T>::pop_at(int position)
 {
-  Node<T> *node = this->get_node_at(position);
+  ListNode<T> *node = this->get_node_at(position);
 
-  Node<T> *previous_node = node->previous;
-  Node<T> *next_node = node->next;
+  ListNode<T> *previous_node = node->previous;
+  ListNode<T> *next_node = node->next;
 
   previous_node->next = next_node;
   next_node->previous = previous_node;
@@ -161,7 +163,7 @@ template <class T>
 int List<T>::pos(const T &value)
 {
   int count = 0;
-  Node<T> *node = this->head->next;
+  ListNode<T> *node = this->head->next;
   while (node != this->tail && node->value != value)
   {
     node = node->next;
@@ -181,7 +183,7 @@ template <class T>
 void List<T>::each(std::function<void(T &)> fn)
 {
 
-  Node<T> *node = this->head->next;
+  ListNode<T> *node = this->head->next;
   while (node != this->tail)
   {
     fn(node->value);
@@ -193,7 +195,7 @@ template <class T>
 void List<T>::each_rev(std::function<void(T &)> fn)
 {
 
-  Node<T> *node = this->tail->previous;
+  ListNode<T> *node = this->tail->previous;
   while (node != this->head)
   {
     fn(node->value);
