@@ -11,9 +11,9 @@ if len(sys.argv) < 3:
 N = int(sys.argv[1])
 I = int(sys.argv[2])
 
-# Temos idades variando de 1 a 100, cada vértice é representado por uma idade e é garantido que não existem vértices com idades repetidas, logo temos no máximo 99 vértices
-if(N >= 100 or N <= 0):
-    print("0 < numero_vertices < 100")
+# Temos idades variando de 1 a 100, cada vértice é representado por uma idade e é garantido que não existem vértices com idades repetidas, logo temos no máximo 100 vértices
+if(N > 100 or N <= 0):
+    print("0 < numero_vertices <= 100")
     exit(2)
 
 # O número mínimo de arestas possíveis ocorre quando o grafo é
@@ -26,7 +26,7 @@ M = random.randint(N - 1, N * (N - 1) / 2)
 print(N, M, I)
 
 # `random.sample` retorna uma lista de inteiros _únicos_.
-idades = random.sample(range(1, 100), N)
+idades = random.sample(range(1, 101), N)
 print(" ".join(str(x) for x in idades))
 
 # Todas as arestas possiveis do grafo, respeitando uma ordenação

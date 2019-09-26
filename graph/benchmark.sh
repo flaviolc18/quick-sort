@@ -14,7 +14,7 @@ LOGFILE="$TESTDIR/log.txt"
 
 mkdir -p $TESTDIR
 
-for i in {10..90..10}; do
+for i in {10..100..10}; do
   echo "vertices: $i; instrucoes $i:" >>$LOGFILE
   python3 gerador.py $i $i >$TESTFILE
   for j in {1..20}; do
