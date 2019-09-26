@@ -12,8 +12,7 @@ struct Member
 
 class Inst
 {
-  //TODO: shared_ptr?
-  Graph<Member> *graph;
+  std::shared_ptr<Graph<Member>> graph;
 
   void swap_helper(const int &a, const int &b);
   void swap(const int &a, const int &b);
@@ -21,7 +20,7 @@ class Inst
   void meeting();
 
 public:
-  Inst(Graph<Member> *graph);
+  Inst(std::shared_ptr<Graph<Member>> graph);
 
   void exec_inst(std::ifstream &file);
 };

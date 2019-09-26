@@ -4,7 +4,7 @@
 
 #define MAX_AGE 100
 
-Inst::Inst(Graph<Member> *graph)
+Inst::Inst(std::shared_ptr<Graph<Member>> graph)
 {
   this->graph = graph;
 }

@@ -15,10 +15,10 @@ main:
 all: main
 
 check:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(BINDIR)/main ${FILE}
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose $(BINDIR)/main ${ARGS}
 
 run:
-	$(BINDIR)/main ${ARGS}
+	./$(BINDIR)/main ${ARGS}
 
 clean:
 	$(RM) -r $(BINDIR)/*
