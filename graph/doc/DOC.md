@@ -3,7 +3,7 @@
 #### <center>Flávio Lúcio Corrêa Júnior </center>
 
 **<center>Universidade Federal de Minas Gerais (UFMG) </center>**
-**<center>Belo Horizonte - MG - Brazil</center>**
+**<center>Belo Horizonte - MG - Brasil</center>**
 
 ---
 
@@ -77,7 +77,7 @@ Exemplo de uma lista encadeada
 
 - **Grafo:**
 
-  - Um grafo é uma estrutura formada por dois conjuntos: um conjunto de chamadas vértices e um conjunto de arestas; cada aresta está associada a dois vértices: o primeiro é a ponta inicial do aresta e o segundo é a ponta final.
+  - Um grafo é uma estrutura formada por dois conjuntos: um conjunto de vértices e um conjunto de arestas; cada aresta está associada a dois vértices: o primeiro é a ponta inicial do aresta e o segundo é a ponta final.
 
   - Para a solução do problema proposto foi utilizado um DAG (do inglês Grafo Acíclico Dirigido), ou seja, uma classe específica de grafos caracterizados por não conter cíclos e suas arestas serem dirigidas.
 
@@ -303,6 +303,17 @@ OBS: a escolha do número de arestas foi baseada na relação do máximo número
 Análise experimental com a média e desvio padrão dos tempos de execução para diferentes entradas.
 
 </center>
+
+- **Perguntas**:
+
+  - Por que o grafo tem que ser dirigido?
+
+    - O grafo tem q ser dirigido pois, uma aresta (u, v) implica que o aluno `u` comanda o aluno `v`, mas isso não implica que o aluno `v` comanda o aluno `u`, o que seria representado por uma aresta não dirigida
+
+  - O grafo pode ter ciclos?
+    - Não pois é garantido que na entrada inicial não há circularidade nos comandos, ou seja, se o aluno A comanda o aluno B então B não pode mandar no aluno A, direta ou indiretamente. E após a execução de qualquer uma das instruções essa propriedade é mantida.
+  - O grafo pode ser uma árvore? O grafo necessariamente é uma árvore?
+    - Não pode ser uma árvore, pois a entrada não necessariamente produz um grafo conexo, o que é característica necessária para ser considerado uma árvore.
 
 ## 4 Conclusão:
 

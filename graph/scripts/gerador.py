@@ -1,3 +1,5 @@
+# OBS: parte do gerador não foi feito por mim
+
 #!/usr/bin/python3
 import numpy as np
 import random
