@@ -4,12 +4,13 @@ import random
 import math
 import sys
 
-if len(sys.argv) < 3:
-    print("usage: python {} [numero_vertices] [numero_instrucoes]".format(sys.argv[0]))
+if len(sys.argv) < 4:
+    print("usage: python {} [numero_vertices] [numero_arestas] [numero_instrucoes]".format(sys.argv[0]))
     exit(2)
 
 N = int(sys.argv[1])
-I = int(sys.argv[2])
+M = int(sys.argv[2])
+I = int(sys.argv[3])
 
 # Temos idades variando de 1 a 100, cada vértice é representado por uma idade e é garantido que não existem vértices com idades repetidas, logo temos no máximo 100 vértices
 if(N > 100 or N <= 0):
@@ -21,7 +22,9 @@ if(N > 100 or N <= 0):
 # grafo é um grafo acíclico dirigido (DAG) -- ocorre quando todo vértice
 # possui uma aresta a todos os outros vértices à sua frente na ordenação
 # topológica, e é `N * (N - 1) / 2`.
-M = random.randint(N - 1, N * (N - 1) / 2)
+if(M > (N * (N - 1) / 2) or M < N - 1):
+    print("N - 1 <= numero_arestas <= N * (N - 1)")
+    exit(2)
 
 print(N, M, I)
 

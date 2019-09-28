@@ -10,20 +10,30 @@ fi
 
 TESTDIR=test
 TESTFILE="$TESTDIR/t.txt"
-LOGFILE="$TESTDIR/log.txt"
+LOGFILE="$TESTDIR/log.json"
 
 mkdir -p $TESTDIR
 
+echo "runnig benchmarks..."
+echo "[" >$LOGFILE
+
+echo $rand
+
 for i in {10..100..10}; do
-  echo "vertices: $i; instrucoes $i:" >>$LOGFILE
-  python3 gerador.py $i $i >$TESTFILE
-  for j in {1..20}; do
+  # a=$(shuf -i $(($i - 1))-$(($i * ($i - 1) / 2)) -n 1)
+  a=$(($i * ($i - 1) / 2))
+  echo "{v: $i, a: $a, i: $i, r:[" >>$LOGFILE
+  python3 gerador.py $i $a $i >$TESTFILE
+  for j in {1..50}; do
     # date +%s%N returns the number of seconds since the epoch + current nanoseconds.
     ts=$(date +%s%N)
-    $1 $TESTFILE >/dev/null
+    result=$($1 $TESTFILE)
     elapsed=$((($(date +%s%N) - $ts) / 1000)) # time in microseconds
 
-    echo "$elapsed;" >>$LOGFILE
+    echo "$elapsed," >>$LOGFILE
   done
   rm $TESTFILE
+  echo "]}," >>$LOGFILE
 done
+echo "]" >>$LOGFILE
+echo "results generated at $LOGFILE"
