@@ -27,7 +27,7 @@ O trabalho consiste em modelar uma equipe de jogadores de Black Jack utilizando 
 
 <center>
 
-![alt text](images/graph.jpeg)
+<img src="https://github.com/flaviolc18/tps/blob/master/graph/doc/images/graph.jpeg?raw=true"/>
 
 Exemplo de uma possível modelagem onde cada vértice armazena o seu número de identificação e sua idade
 
@@ -55,7 +55,7 @@ No geral, o programa desenvolvido aceita entradas contendo as informações sobr
 
 <center>
 
-![alt text](images/array.png)
+<img src="https://github.com/flaviolc18/tps/blob/master/graph/doc/images/array.png?raw=true"/>
 
 Exemplo de um vetor
 
@@ -67,7 +67,7 @@ Exemplo de um vetor
 
 <center>
 
-![alt text](images/lista.jpeg)
+<img src="https://github.com/flaviolc18/tps/blob/master/graph/doc/images/lista.jpeg?raw=true"/>
 
 Exemplo de uma lista encadeada
 
@@ -89,64 +89,64 @@ Para a resolução do problema implementou-se três classes que concentram a ló
 
 - **List:** classe que exporta uma API para realizar operações em uma lista encadeada
 
-  - `int length();`
+  - **`int length();`**
     - retorna o tamanho da lista
-  - `bool empty();`
+  - **`bool empty();`**
     - retorna um boleano indicando se a lista está vazia
-  - `bool has(const T &value);`
+  - **`bool has(const T &value);`**
     - retorna um boleano indicando se `value` está presente na lista
-  - `int pos(const T &value);`
+  - **`int pos(const T &value);`**
     - retorna a posição de `value` na lista
-  - `void each(std::function<void(T &)> fn);`
+  - **`void each(std::function<void(T &)> fn);`**
     - executa a função parametrizada em cada elemento da lista
-  - `void each_rev(std::function<void(T &)> fn);`
+  - **`void each_rev(std::function<void(T &)> fn);`**
     - executa a função parametrizada em cada elemento da lista em ordem reversa
-  - `void push_first(T value);`
+  - **`void push_first(T value);`**
     - incluiu `value` no início da lista
-  - `void push_last(T value);`
+  - **`void push_last(T value);`**
     - incluiu `value` no final da lista
-  - `T at(int position);`
+  - **`T at(int position);`**
     - retorna o n-ésimo elemento da lista
-  - `T first();`
+  - **`T first();`**
     - retorna o primeiro elemento da lista
-  - `T last();`
+  - **`T last();`**
     - retorna o último elemento da lista
-  - `T pop_at(int position);`
+  - **`T pop_at(int position);`**
     - remove o n-ésimo elemento da lista
-  - `T pop_first();`
+  - **`T pop_first();`**
     - remove o primeiro elemento da lista
-  - `T pop_last();`
+  - **`T pop_last();`**
     - remove o último elemento da lista
 
 - **Graph:** classe que exporta uma API para realizar operações em um grafo
 
-  - `bool has_node(int v);`
+  - **`bool has_node(int v);`**
     - retorna um boleano indicando se o grafo contém um nó com índice `v`
-  - `void new_node(int v, T value);`
+  - **`void new_node(int v, T value);`**
     - cria um novo nó com índice `v` e valor `value`
-  - `void remove_node(int v);`
+  - **`void remove_node(int v);`**
     - remove o nó com índice `v`
-  - `bool has_edge(int v1, int v2);`
+  - **`bool has_edge(int v1, int v2);`**
     - retorna um boleano indicando se existe uma aresta direcionada de `v1` para `v2`
-  - `void set_edge(int v1, int v2);`
+  - **`void set_edge(int v1, int v2);`**
     - cria uma aresta direcionada de `v1` para `v2`
-  - `void remove_edge(int v1, int v2);`
+  - **`void remove_edge(int v1, int v2);`**
     - remove uma aresta direcionada de `v1` para `v2`
-  - `void bfs(int v, std::function<void(T &)> fn);`
+  - **`void bfs(int v, std::function<void(T &)> fn);`**
     - executa um caminhamento em largura aplicando a função parametrizada em cada elemento
-  - `void dfs(int v, std::function<void(T &)> fn);`
+  - **`void dfs(int v, std::function<void(T &)> fn);`**
     - executa um caminhamento em profundidade aplicando a função parametrizada em cada elemento
-  - `std::shared_ptr<List<T>> topological_sort();`
+  - **`std::shared_ptr<List<T>> topological_sort();`**
     - retorna uma lista contendo a ordenação topológica do grafo
-  - `bool cyclic();`
+  - **`bool cyclic();`**
     - retorna um boleano indicando se o grafo contém pelo menos um cíclo
-  - `std::unique_ptr<Graph<T>> transpose();`
+  - **`std::unique_ptr<Graph<T>> transpose();`**
     - retorna uma instância do grafo transposto do original
-  - `void print(std::function<std::string(T &)> to_string);`
+  - **`void print(std::function<std::string(T &)> to_string);`**
     - imprime todos nós e suas respectivas listas de adjacência
 
 - **Inst:** classe que exporta uma API para executar as instruções SWAP, COMMANDER e MEETING
-  - `void exec_inst(std::ifstream &file);`
+  - **`void exec_inst(std::ifstream &file);`**
     - executa a próxima instrução presente em um arquivo parametrizado, esta podendo ser SWAP, COMMANDER ou MEETING
 
 ### **2.3 Algoritmos:**
@@ -204,8 +204,8 @@ Para realizar tal análise, vejamos a representação, em pseudo-códigos, do al
 - **COMMANDER:**
 
 ```
-transposto = gerarGrafoTransposto;
-idadeMinima = MAX_IDADE;
+transposto = gerarGrafoTransposto
+idadeMinima = MAX_IDADE
 
 FUN atualizaIdadeMinima idade
   SE idade < idadeMinima
@@ -220,7 +220,7 @@ imprime "C " + idadeMinima
 - **MEETING:**
 
 ```
-ordenacaoTopologica = calcularOrdenacaoTopologica;
+ordenacaoTopologica = calcularOrdenacaoTopologica
 PARA CADA no EM reverso(ordenacaoTopologica)
   imprime no.idade
 ```
@@ -275,20 +275,20 @@ Dadas as seguintes complexidades de espaço, já conhecidas, dos algoritmos:
 - **SWAP:**
 
   - **existeAresta** + **removeAresta** + **incluiAresta** + **grafoEhCiclico** + **removeAresta** + **incluiAresta**
-  - **O(V)** + **O(V)** + **O(1)** + **O(V+A)** + **O(V)** + **O(1)**
-  - **O(V+A)**
+  - **O(1)** + **O(1)** + **O(1)** + **O(V)** + **O(1)** + **O(1)**
+  - **O(V)**
 
 - **COMMANDER:**
 
   - **gerarGrafoTransposto** + **executaBFS** \* **atualizaIdadeMinima**
-  - **O(V+A)** + (**O(V+A)** x **O(1)**)
+  - **O(V+A)** + (**O(V)** x **O(1)**)
   - **O(V+A)**
 
 - **MEETING:**
 
   - **calcularOrdenacaoTopologica** + **imprimirNosOrdemReversa**
-  - **O(V+A)** + **O(V)**
-  - **O(V+A)**
+  - **O(V)** + **O(1)**
+  - **O(V)**
 
 ### **3.3 Análise Experimental:**
 
@@ -298,7 +298,7 @@ OBS: a escolha do número de arestas foi baseada na relação do máximo número
 
 <center>
 
-![alt text](images/chart.png)
+<img src="https://github.com/flaviolc18/tps/blob/master/graph/doc/images/chart.png?raw=true"/>
 
 Análise experimental com a média e desvio padrão dos tempos de execução para diferentes entradas.
 
