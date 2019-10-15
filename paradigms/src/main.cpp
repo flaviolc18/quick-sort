@@ -6,9 +6,9 @@
 
 std::pair<int, int> solve_dp(int n, int W, int Vn[], int Wn[])
 {
-  // OBS: as posições 0 das duas dimensões são usadas para os casos base
-  // ou seja, os arranjos de soluções de fato começam nas posições 1
-  // para compensar isso, ao acessar os arranjos Vn e Wn (os quais comçam em 0) usamos i - 1
+  // OBS: a posição 0 das duas dimensões é usada para o caso base
+  // ou seja, os arranjos de soluções de fato começam na posição 1
+  // para compensar, ao acessar os arranjos Vn e Wn (os quais começam em 0) usamos (i - 1)
   int opt[n + 1][W + 1];
 
   for (int i = 0; i <= n; i++)
@@ -23,7 +23,7 @@ std::pair<int, int> solve_dp(int n, int W, int Vn[], int Wn[])
         opt[i][w] = opt[i - 1][w];
       else
         // caso contrário pegamos o máximo entre a solução q inclui e a q não inclui Vn[i]
-        // discontando Wn[i] do máximo permitido
+        // descontando Wn[i] do máximo permitido
         opt[i][w] = std::max(Vn[i - 1] + opt[i - 1][w - Wn[i - 1]], opt[i - 1][w]);
     }
   }
