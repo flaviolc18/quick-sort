@@ -24,18 +24,17 @@ std::pair<int, int> solve_dp(int n, int W, int Vn[], int Wn[])
       else
         // caso contrário pegamos o máximo entre a solução q inclui e a q não inclui Vn[i]
         // descontando Wn[i] do máximo permitido
-        opt[i][w] = std::max(Vn[i - 1] + opt[i - 1][w - Wn[i - 1]], opt[i - 1][w]);
+        opt[i][w] = std::max(opt[i - 1][w], Vn[i - 1] + opt[i - 1][w - Wn[i - 1]]);
     }
   }
 
-  int res = opt[n][W];
   int items = 0;
-  int w = W;
-  for (int i = n; i > 0 && res > 0; i--)
+  int res = opt[n][W];
+  // para achar a quantidade de itens começamos avaliando o topo da matriz solução
+  for (int i = n, w = W; i > 0 && res > 0; i--)
   {
-    if (res == opt[i - 1][w])
-      continue;
-    else
+    // se Vn[i-1] está presente na solução ótima, então a relação abaixo é verdadeira
+    if (res == Vn[i - 1] + opt[i - 1][w - Wn[i - 1]])
     {
       items++;
       res = res - Vn[i - 1];
