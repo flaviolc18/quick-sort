@@ -1,46 +1,21 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <bits/stdc++.h>
 
 std::pair<int, int> solve_dp(int n, int W, int Vn[], int Wn[])
 {
-  // OBS: a posição 0 das duas dimensões é usada para o caso base
-  // ou seja, os arranjos de soluções de fato começam na posição 1
-  // para compensar, ao acessar os arranjos Vn e Wn (os quais começam em 0) usamos (i - 1)
-  int opt[n + 1][W + 1];
 
-  for (int i = 0; i <= n; i++)
-  {
-    for (int w = 0; w <= W; w++)
-    {
-      // casos base
-      if (i == 0 || w == 0)
-        opt[i][w] = 0;
-      // se o peso for maior que o total permitido não o incluimos
-      else if (Wn[i - 1] > w)
-        opt[i][w] = opt[i - 1][w];
+  std::pair<int, int> opt[W + 1] = {std::make_pair(0, 0)};
+
+  for (int i = 0; i < n; i++)
+    for (int j = W; j >= Wn[i]; j--)
+      if (Vn[i] + opt[j - Wn[i]].first >= opt[j].first)
+        opt[j] = std::make_pair(Vn[i] + opt[j - Wn[i]].first, opt[j - Wn[i]].second + 1);
       else
-        // caso contrário pegamos o máximo entre a solução q inclui e a q não inclui Vn[i]
-        // descontando Wn[i] do máximo permitido
-        opt[i][w] = std::max(opt[i - 1][w], Vn[i - 1] + opt[i - 1][w - Wn[i - 1]]);
-    }
-  }
+        opt[j] = std::make_pair(opt[j].first, opt[j].second);
 
-  int items = 0;
-  int res = opt[n][W];
-  // para achar a quantidade de itens começamos avaliando o topo da matriz solução
-  for (int i = n, w = W; i > 0 && res > 0; i--)
-  {
-    // se Vn[i-1] está presente na solução ótima, então a relação abaixo é verdadeira
-    if (res == Vn[i - 1] + opt[i - 1][w - Wn[i - 1]])
-    {
-      items++;
-      res = res - Vn[i - 1];
-      w = w - Wn[i - 1];
-    }
-  }
-
-  return std::make_pair(opt[n][W], items);
+  return opt[W];
 }
 
 bool compare(std::pair<int, int> const &i1, std::pair<int, int> const &i2)

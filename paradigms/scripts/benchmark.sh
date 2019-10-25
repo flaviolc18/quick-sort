@@ -23,10 +23,10 @@ echo "[" >$LOGFILE
 
 echo $rand
 
-min=10
-max=100
-step=10
-numtests=20
+min=1000
+max=100000
+step=1000
+numtests=10
 
 for i in $(eval echo "{$min..$max..$step}"); do
   echo "running for N = $i"
