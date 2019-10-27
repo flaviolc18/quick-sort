@@ -1,6 +1,33 @@
 #include <iostream>
 #include <fstream>
-#include <algorithm>
+
+void merge(std::pair<long, long> arr[], long left, long mid, long right, bool (*comp)(std::pair<long, long> const &, std::pair<long, long> const &))
+{
+  for (long j, i = right; i >= mid + 1; i--)
+  {
+    auto last = arr[mid];
+    for (j = mid - 1; j >= left && !comp(arr[j], arr[i]); j--)
+      arr[j + 1] = arr[j];
+
+    if (j != mid - 1 || !comp(last, arr[i]))
+    {
+      arr[j + 1] = arr[i];
+      arr[i] = last;
+    }
+  }
+}
+
+void merge_sort(std::pair<long, long> arr[], long left, long right, bool (*comp)(std::pair<long, long> const &, std::pair<long, long> const &))
+{
+  if (left < right)
+  {
+    long mid = left + (right - left) / 2;
+    merge_sort(arr, left, mid, comp);
+    merge_sort(arr, mid + 1, right, comp);
+
+    merge(arr, left, mid, right, comp);
+  }
+}
 
 bool compare(std::pair<long, long> const &i1, std::pair<long, long> const &i2)
 {
@@ -13,7 +40,7 @@ std::pair<long, long> solve_greedy(long n, long W, long Vn[], long Wn[])
   for (long i = 0; i < n; i++)
     sorted[i] = std::make_pair(Vn[i], Wn[i]);
 
-  std::sort(sorted, sorted + n, compare);
+  merge_sort(sorted, 0, n - 1, compare);
 
   long days = 0, pts = 0, cash = W;
   for (long i = 0; i < n && cash > 0; i++)
@@ -33,7 +60,6 @@ std::pair<long, long> solve_greedy(long n, long W, long Vn[], long Wn[])
 
 std::pair<long, long> solve_dp(long n, long W, long Vn[], long Wn[])
 {
-
   std::pair<long, long> opt[W + 1] = {std::make_pair(0, 0)};
 
   for (long i = 0; i < n; i++)
