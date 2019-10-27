@@ -69,8 +69,8 @@ int main(int argc, char **argv)
   std::pair<long, long> res_greedy = solve_greedy(qtd_islands, available_cash, points, costs);
   std::cout << res_greedy.first << " " << res_greedy.second << std::endl;
 
-  // std::pair<long, long> res_dp = solve_dp(qtd_islands, available_cash, points, costs);
-  // std::cout << res_dp.first << " " << res_dp.second << std::endl;
+  std::pair<long, long> res_dp = solve_dp(qtd_islands, available_cash, points, costs);
+  std::cout << res_dp.first << " " << res_dp.second << std::endl;
 
   return 0;
 }

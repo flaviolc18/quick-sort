@@ -1,4 +1,4 @@
-### <center> Trabalho Estrutura de Dados</center>
+### <center> Trabalho Algoritmos 1</center>
 
 #### <center>Flávio Lúcio Corrêa Júnior </center>
 
@@ -114,7 +114,7 @@ SE i = 0 OU w = 0 ENTAO:
 SENAO SE Wn[i - 1] > w ENTAO:
   OPT(i, w) = OPT(i - 1, w)
 SENAO:
-  OPT(i, w) = MAX(Vn[i - 1] + OPT(i - 1, w - Wn[i - 1]), OPT(i - 1, w)
+  OPT(i, w) = MAX(Vn[i - 1] + OPT(i - 1, w - Wn[i - 1]), OPT(i - 1, w))
 ```
 
 - O primeiro caso occore pois, se temos um conjunto com 0 ilhas ou 0 valor disponível, não conseguimos nenhuma pontuação, no segundo caso, se o custo da ilha `i-1` for maior que o valor disponível, então a ilha `i-1` não pode estar presente na solução ótima. Já no terceiro caso, o custo da ilha `i-1` é menor ou igual o valor disponível, logo, a solução ótima é composta pelo máximo entre duas opções: incluimos ou não a ilha `i-1`. Se incluirmos, então a solução máxima é composta por `Vn[i-1]` (pontuação da ilha `i-1`) somado a solução ótima do conjunto `0...i-1` e com `w - Wn[i-1]` (custo da ilha `i-1`) valor disponível, o que é intuitivo se pensarmos que para a ilha na posição `i-1` gastamos `Wn[i-1]` e, por conseguinte, ganhamos `Vn[i-1]` pontos. Caso contrário, apenas pegamos a solução ótima do conjunto de `0...i-1` ilhas.
@@ -141,7 +141,15 @@ FUNCAO programacao_dinamica(numero_ilhas, valor_disponivel, pontos, custos):
   RETORNA opt[W]
 ```
 
-### **2.4 Compilador:**
+### **2.4 Por que estratégia gulosa?**
+
+- Para o primeiro problema, achar a maior pontuação possı́vel para um roteiro no qual pode haver repetições de ilhas, o algoritmo guloso apresenta uma heurística satisfatória que visa maximizar os pontos ficando o máximo possível na ilha com o melhor custo benefício. Para este caso, a estratégia gulosa é de simples implementação e apresenta resultados que satisfazem, razoavelmente, os requisitos do problema.
+
+### **2.5 Por que programação dinâmica?**
+
+- No segundo caso, repetição de ilhas não é permitida, de fato, aqui uma solução gulosa poderia distorcer bastante os resultados esperados, uma vez que temos diversos subproblemas que se sobrepoem, fazendo-se necessário o cálculo de todas as possibílidades. O que é feito de maneira elegante com programação dinâmica e memoização, apresentando uma solução um pouco sutil, porém que sempre computa uma solução ótima (ver 5.2).
+
+### **2.6 Compilador:**
 
 O compilador usado foi o GNU Compiler Collection, comando `g++` com a flag `-std=c++14` especificando o padrão da linguagem utilizado.
 
@@ -225,7 +233,7 @@ Análise experimental com a média e desvio padrão dos tempos de execução par
 
 </center>
 
-- Além disso, percebe-se que para diferentes valores de `valor maximo disponível` a compliexidade assintótica não muda, o que evidencia que a complexidade do tempo de execução depende apenas do número de ilhas e é O(M log M).
+- Além disso, percebe-se que para diferentes valores de `valor maximo disponível` a complexidade assintótica não muda, o que evidencia que a complexidade do tempo de execução depende apenas do número de ilhas e é O(M log M).
 
 - **OBS**: valores de M e N estão invertidos na legenda do gráfico. Ou seja, somente neste caso, N representa o número de ilhas e M o valor disponivel.
 
@@ -239,7 +247,7 @@ Análise experimental com a média e desvio padrão dos tempos de execução par
 
 - **Programação Dinâmica:**
 
-  - Da mesma forma, availamos que a complexidade de tempo de execução do segundo algoritmo é limitada superiormente por O(M \* N), o que pode ser comprovado pela ilustração no gráfico abaixo, onde foi registrado a média e o desvio padrão dos tempos de execução para 10 testes com o número de ilhas (M) fixo e valor disponível (N) em função de M, custos e pontuações foram variados aleatóriamente.
+  - Da mesma forma, availamos que a complexidade de tempo de execução do segundo algoritmo é limitada superiormente por O(M \* N), o que pode ser comprovado pela ilustração no gráfico abaixo, onde foi registrado a média dos tempos de execução para 10 testes com o número de ilhas (M) fixo e valor disponível (N) em função de M, custos e pontuações foram variados aleatóriamente.
 
   - **OBS**: este cenário foi repetido para M = 100, 200, 300, . . . , 1000, gerando o grafico abaixo.
 
@@ -261,14 +269,12 @@ Análise experimental com a média dos tempos de execução para diferentes entr
 
 </center>
 
-[REVERRRRRRRRRRRRRRRRRRRRRRRRRR]
-
 - **Conhecer mais lugares X Tempo de estadia no local:**
   - Conclui-se, portanto, que para maximizar o número de ilhas visitadas o algoritmo com programação dinâmica de fato possui uma melhor abordagem uma vez que este não considera a repetição de ilhas para dois dias diferentes e sempre dá preferência para a solução que maximiza a quantidade total de pontos obtidos. Por outro lado, quando o interesse é maximizar o tempo de estadia no local, o algoritmo guloso demonstra retornar uma melhor solução, pois este opta sempre pela ilha com o melhor custo x benefício e fica, nesta, o máximo de dias possível.
 
-## 4 Prova de corretude:
+## 5 Prova de corretude:
 
-- **Guloso:**
+- **5.1 Guloso:**
 
   - Tal estratégia, neste caso, não produz uma solução ótima que maximiza a pontuação das ilhas. Para provar este fato, basta analisar o seguinte contra exemplo:
 
@@ -276,13 +282,15 @@ Análise experimental com a média dos tempos de execução para diferentes entr
 
   - Esse tipo de resultado é bem comum para resoluções de problemas com paradigmas gulosos, pois, nem sempre a soma de soluções ótimas locais levam para uma solução ótima global, o que, de fato, acontece com o problema em questão.
 
-- **Programação Dinâmica:**
+- **5.2 Programação Dinâmica:**
 
-## 5 Conclusão:
+  - Por definição `OPT(0, x) = OPT(y, 0) = 0`, para quaisquer `x` e `y`. Agora, seja `n > 0` e `w > 0`, suponha, por indução, que o algoritmo `OPT(i, j)` computa a solução ótima para todo `i < n e j < w`. Pela hipótese indutiva, sabemos que `OPT(n, w-Wn[n-1])` é de fato solução ótima, bem como `OPT(n-1, w)`. Portanto, pela equação de Bellman modelada, se `Wn[n - 1] > w` entao `OPT(n, w) = OPT(n - 1, w)`, que é solução ótima pela hipótese, uma vez que não podemos incluir a ilha `i-1`, caso contrário `OPT(n, w) = MAX(Vn[n - 1] + OPT(n - 1, w - Wn[n - 1]), OPT(n - 1, w))`, ou seja, a solução que maximiza o número de pontos dentre as duas possíveis escolhas, inclui-se ou não a ilha `n-1`, mas como `OPT(n - 1, w - Wn[n - 1])` e `OPT(n - 1, w)` são ótimas pela hipótese, `OPT(n, w)` também é.
 
-- O trabalho prático proposto foi de grande utilidade para exercitar a implementação dos algoritmos vistos em aula e o melhor entendimento de como estes podem ser usados para a solução de possíveis problemas da vida real. Além disso, compreender o comportamento de tais algoritmos baseando-se em sua análise de complexidade.
+## 6 Conclusão:
 
-## 5 Bibliografia:
+- O trabalho prático proposto foi de grande utilidade para exercitar a implementação dos paradigmas de programação vistos em aula e o melhor entendimento de como estes podem ser usados para a solução de possíveis problemas da vida real. Além disso, compreender o comportamento de tais algoritmos baseando-se em sua análise de complexidade e prova de corretude.
+
+## 7 Bibliografia:
 
 - _Introduction to Algorithms - Second Edition, Cormen, Leiserson, Rivest, Stein_
 - _Algorithm Design - Jon Kleinberg and Éva Tardos_
