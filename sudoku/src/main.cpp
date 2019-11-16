@@ -1,0 +1,131 @@
+#include <iostream>
+#include <cmath>
+
+#define MAX 9
+
+using namespace std;
+
+void print(int colors[], int N)
+{
+  for (int i = 0; i < N * N; i++)
+  {
+    if (i > 0 && i % N == 0)
+      cout << endl;
+    cout << colors[i] << " ";
+  }
+  cout << endl;
+}
+
+int vertex(int i, int j, int N)
+{
+  return i * N + j;
+}
+
+void transform(int matrix[][MAX], int graph[][MAX * MAX], int N, int C, int R)
+{
+  for (int i = 0; i < N; i++)
+    for (int j = 0; j < N; j++)
+    {
+      // position of the vertex (i, j) on the adj matrix
+      int v1 = vertex(i, j, N);
+
+      // for each same row vertex
+      for (int k = j + 1; k < N; k++)
+      {
+        int v2 = vertex(i, k, N);
+        graph[v1][v2] = 1;
+        graph[v2][v1] = 1;
+      }
+
+      // for each same column vertex
+      for (int k = i + 1; k < N; k++)
+      {
+        int v2 = vertex(k, j, N);
+        graph[v1][v2] = 1;
+        graph[v2][v1] = 1;
+      }
+
+      // for each same quadrant vertex
+      for (int k = i + 1; k < N && ceil((float)(i + 1) / R) == ceil((float)(k + 1) / R); k++)
+      {
+        for (int l = 0; l < N; l++)
+        {
+          if (ceil((float)(j + 1) / C) != ceil((float)(l + 1) / C))
+            continue;
+
+          int v2 = vertex(k, l, N);
+          graph[v1][v2] = 1;
+          graph[v2][v1] = 1;
+        }
+      }
+    }
+}
+
+bool safe(int graph[][MAX * MAX], int colors[], int v, int c, int N)
+{
+  for (int i = 0; i < N * N; i++)
+    if (graph[v][i] && c == colors[i])
+      return false;
+  return true;
+}
+
+bool color_graph(int graph[][MAX * MAX], int colors[], int v, int N)
+{
+  if (v == N * N)
+    return true;
+
+  if (colors[v] != 0)
+    return color_graph(graph, colors, v + 1, N);
+
+  for (int c = 1; c <= N; c++)
+
+  {
+    if (safe(graph, colors, v, c, N))
+    {
+      colors[v] = c;
+
+      if (color_graph(graph, colors, v + 1, N))
+        return true;
+
+      colors[v] = 0;
+    }
+  }
+  return false;
+}
+
+void setup_colors(int colors[], int matrix[][MAX], int N)
+{
+  for (int i = 0; i < N; i++)
+    for (int j = 0; j < N; j++)
+      if (matrix[i][j] != 0)
+        colors[vertex(i, j, N)] = matrix[i][j];
+}
+
+int main(int argc, char **argv)
+{
+  int N, I, J;
+
+  cin >> N >> I >> J;
+
+  int matrix[MAX][MAX] = {0};
+  int graph[MAX * MAX][MAX * MAX] = {0};
+
+  for (int i = 0; i < N; i++)
+    for (int j = 0; j < N; j++)
+      cin >> matrix[i][j];
+
+  int colors[MAX * MAX] = {0};
+
+  setup_colors(colors, matrix, N);
+
+  transform(matrix, graph, N, I, J);
+
+  if (color_graph(graph, colors, 0, N))
+    cout << "solução" << endl;
+  else
+    cout << "sem solução" << endl;
+
+  print(colors, N);
+
+  return 0;
+}
