@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <vector>
 
 #define MAX 9
 
@@ -62,91 +61,52 @@ void transform(int matrix[][MAX], int graph[][MAX * MAX], int N, int C, int R)
     }
 }
 
+bool safe(int graph[][MAX * MAX], int colors[], int v, int c, int N)
+{
+  for (int i = 0; i < N * N; i++)
+    if (graph[v][i] && c == colors[i])
+      return false;
+  return true;
+}
+
+bool color_graph(int graph[][MAX * MAX], int colors[], int v, int N)
+{
+  // if we colored all vertex
+  if (v == N * N)
+    return true;
+
+  // if a vertex is already colored
+  if (colors[v] != 0)
+    return color_graph(graph, colors, v + 1, N);
+
+  // for each available color (numbers from 1 ... N)
+  for (int c = 1; c <= N; c++)
+  {
+    // if there's no adjacent vertex with the same color
+    if (safe(graph, colors, v, c, N))
+    {
+      // color it
+      colors[v] = c;
+
+      // if by coloring v with color c all other vertices were colored without no conflict
+      if (color_graph(graph, colors, v + 1, N))
+        return true;
+
+      // else uncolor v and try the next color
+      colors[v] = 0;
+    }
+  }
+
+  // if no one of the N colors are valid to v, then there's no solution
+  return false;
+}
+
 void setup_colors(int colors[], int matrix[][MAX], int N)
 {
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++)
       if (matrix[i][j] != 0)
         colors[vertex(i, j, N)] = matrix[i][j];
-}
-
-vector<int> find_adj_colors(int v, int colors[], int graph[][MAX * MAX], int N)
-{
-  std::vector<int> adj_colors(N, 0);
-
-  for (int v1 = 0; v1 < N * N; v1++)
-  {
-    if (graph[v][v1])
-      if (colors[v1])
-        adj_colors[colors[v1] - 1] = 1;
-  }
-
-  return adj_colors;
-}
-
-int find_available_color(int v, int colors[], int graph[][MAX * MAX], int N)
-{
-  auto adj_colors = find_adj_colors(v, colors, graph, N);
-
-  for (int i = 0; i < N; i++)
-    if (!adj_colors[i])
-      return i + 1;
-
-  return -1;
-}
-
-int sat_degree(int v, int colors[], int graph[][MAX * MAX], int N)
-{
-  auto adj_colors = find_adj_colors(v, colors, graph, N);
-
-  int s = 0;
-  for (int i = 0; i < N; i++)
-    s += adj_colors[i];
-  return s;
-}
-
-int find_max_degree_vertex(int graph[][MAX * MAX], int colors[], int N)
-{
-  int max = -1;
-  int index = -1;
-
-  for (int v = 0; v < N * N; v++)
-  {
-    if (colors[v])
-      continue;
-
-    int d = sat_degree(v, colors, graph, N);
-    if (d > max)
-    {
-      max = d;
-      index = v;
-    }
-  }
-
-  return index;
-}
-
-bool color_graph(int graph[][MAX * MAX], int colors[], int N)
-{
-  int colored = 0;
-
-  for (int v = 0; v < N * N; v++)
-    if (colors[v])
-      colored++;
-
-  while (colored < N * N)
-  {
-    int max_degree_vertex = find_max_degree_vertex(graph, colors, N);
-
-    int color = find_available_color(max_degree_vertex, colors, graph, N);
-
-    if (color == -1)
-      return false;
-
-    colors[max_degree_vertex] = color;
-    colored++;
-  }
-  return true;
 }
 
 int main(int argc, char **argv)
@@ -168,7 +128,7 @@ int main(int argc, char **argv)
 
   transform(matrix, graph, N, I, J);
 
-  if (color_graph(graph, colors, N))
+  if (color_graph(graph, colors, 0, N))
     cout << "solução" << endl;
   else
     cout << "sem solução" << endl;
