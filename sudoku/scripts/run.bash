@@ -11,9 +11,12 @@ if [ ! -x $1 ]; then
 fi
 
 BASEDIR=$(pwd)
-INDIR="$BASEDIR/test/dataset/in"
-OUTDIR="$BASEDIR/test/dataset/out"
+INDIR="$BASEDIR/test/dataset2/in"
+OUTDIR="$BASEDIR/test/dataset2/out"
 
 for FILENAME in $(ls $INDIR); do
-  $($1 < $INDIR/$FILENAME > $OUTDIR/$FILENAME)
+    ts=$(date +%s%N)
+    $($1 $INDIR/$FILENAME > $OUTDIR/$FILENAME)
+    elapsed=$((($(date +%s%N) - $ts) / 1000))
+    echo $elapsed
 done

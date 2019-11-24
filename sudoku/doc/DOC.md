@@ -34,25 +34,27 @@ Exemplo de um Sudoku 9x9.
 
 ## 2 Implementação:
 
-No geral, o programa desenvolvido aceita entradas contendo três inteiros, em que N representa o tamanho (N x N) da tabela do Sudoku, I representa a quantidade de colunas de cada quadrante e J representa a quantidade de linhas de cada quadrante. Nas próximas NxN linhas, é dada a instância do Sudoku. A saída é composta por uma linha indentificando se foi encontrada uma solução ("solução") ou não ("sem solução") seguida da instância do Sudoku resolvida ou semiresolvida.
+- No geral, o programa desenvolvido aceita entradas contendo três inteiros, em que N representa o tamanho (N x N) da tabela do Sudoku, I representa a quantidade de colunas de cada quadrante e J representa a quantidade de linhas de cada quadrante. Nas próximas NxN linhas, é dada a instância do Sudoku.
 
-Para a resolução do Sudoku, transformou-se, o mesmo, em um problema de coloração de grafos, como este é um problema NP-Completo, torna-se inviável a busca de um algoritmo polinomial que sempre resolva qualquer instância do mesmo. Dessa forma, fez-se o uso de heurísticas que apresentam soluções polinomiais para a maioria dos casos.
+- A saída é composta por uma linha indentificando se foi encontrada uma solução ("solução") ou não ("sem solução") seguida da instância do Sudoku resolvida ou semiresolvida.
+
+- Para a resolução do Sudoku, transformou-se, o mesmo, em um problema de coloração de grafos, como este é um problema NP-Completo, torna-se inviável a busca de um algoritmo polinomial que sempre resolva qualquer instância do mesmo. Dessa forma, fez-se o uso de heurísticas que apresentam soluções polinomiais para a maioria dos casos.
 
 ### **2.1 Transformação:**
 
 Antes de apresentar a solução para o problema de coloração de grafos, e consequentemente para o Sudoku, precisamos apresentar como foi modelada uma instância genérica de um Sudoku NxN em uma instância de coloração de grafos.
 
-Seja M uma matriz NxN representando uma instância genérica do Sudoku. Para cada célula de M criou-se um nó em um grafo não direcionado G = (V, E) e, para cada dois vértices em V, sejam v1 e v2, criou-se uma aresta (v1, v2) se, e somente se, em M, v1 e v2 estão na mesma coluna, mesma linha ou no mesmo quadrante onde um quadrante é definido para inteiros I (quantidade de colunas) e J (quantidade de linhas). Então afirma-se: a instância do Sudoku M tem solução se, e somente se, G pode ser colorido com no máximo N diferente cores de forma que dois vértices adjacentes não são coloridos com mesma cor.
+- Seja M uma matriz NxN representando uma instância genérica do Sudoku. Para cada célula de M criou-se um nó em um grafo não direcionado G = (V, E) e, para cada dois vértices em V, sejam v1 e v2, criou-se uma aresta (v1, v2) se, e somente se, em M, v1 e v2 estão na mesma coluna, mesma linha ou no mesmo quadrante onde um quadrante é definido para inteiros I (quantidade de colunas) e J (quantidade de linhas). Então afirma-se: a instância do Sudoku M tem solução se, e somente se, G pode ser colorido com no máximo N diferente cores de forma que dois vértices adjacentes não são coloridos com mesma cor.
 
 **Prova**:
 
-- Seja S, uma solução para M, um vetor de NxN inteiros onde cada elemento i de S corresponde a uma célula em M. Agora considere o arranjo S' em G composto pelos vérticis correspondentes as célula de S. Para cada inteiro i E S atribua uma cor i ao vértice correspondente em S'. Como S é solução de M, não existem duas células na mesma linha, coluna ou quadrante com o mesmo inteiro i e, por conseguinte, não existem dois vértices em S' com arestas entre si e com a mesma cor. Portanto, S' é solução para G.
+- Seja S, uma solução para M, um vetor de NxN inteiros onde cada elemento i de S corresponde a uma célula em M. Agora considere o arranjo S' em G composto pelos vértices correspondentes as célula de S. Para cada inteiro i pertencente à S atribua uma cor i ao vértice correspondente em S'. Como S é solução de M, não existem duas células na mesma linha, coluna ou quadrante com o mesmo inteiro i e, por conseguinte, não existem dois vértices em S' com arestas entre si e com a mesma cor. Portanto, S' é solução para G.
 
 - Inversamete, seja S' uma solução para a coloração em G, atribua às células correspondentes em S números de 1 a N de tal forma que cada cor em S' represente um número em S. Dessa forma S não terá números iguais associados a células da mesma coluna, linha ou quadrante, ou seja S é solução para M.
 
 ### **2.2 Heurísticas:**
 
-A heurística utilizada é consiste em uma abordagem gulosa, conhecida na literatura pelo nome de seu criador Welsh-Powell. Basicamente, o algoritmo foca em escolher, cuidadosamente, o próximo nó a ser colorido. Uma vez que este é colorido, sua cor nunca mais muda. Dessa forma, o algoritmo de Welsh-Powell sugere que deve-se escolher o nó com o maior grau de saturação, ou seja, o vértice cujo número de nós vizinhos coloridos seja o maior possível. E, assim, colorindo-o com a menor cor disponível.
+- A heurística utilizada consiste em uma abordagem gulosa, conhecida na literatura pelo nome de seu criador Welsh-Powell. Basicamente, o algoritmo foca em escolher, cuidadosamente, o próximo nó a ser colorido. Uma vez que este é colorido, sua cor nunca mais muda. Dessa forma, o algoritmo de Welsh-Powell sugere que deve-se escolher o nó com o maior grau de saturação, ou seja, o vértice cujo número de nós vizinhos coloridos seja o maior possível. E, assim, colorindo-o com a menor cor disponível.
 
 ```
 FUNCAO colorir_grafo(grafo, cores, numero_total_vertices):
@@ -75,7 +77,7 @@ FUNCAO colorir_grafo(grafo, cores, numero_total_vertices):
 
 ### **2.2 Por que Welsh-Powell?**
 
-O uso de tal heurística se da, pois, para qualquer algoritmo de coloração gulosa, uma nova cor precisa ser incluida sempre que um vértice se econtra com todas as cores disponíveis em seus vizinhos, logo, a única maneira de colorir tal vértice é incluindo mais uma cor. Dessa forma, naturalmente aparece a necessidade de evitar tal situação indesejada, o que é feito pela tentativa de visitar, e colorir, todos os vértices com grau de saturação alto, reduzindo, assim, o risco de precisar adicionar uma nova cor e, consequentemente, não encontrar solução para o Sudoku, caso ultrapasse o limite de N cores.
+- O uso de tal heurística se da, pois, para qualquer algoritmo de coloração gulosa, uma nova cor precisa ser incluida sempre que um vértice se econtra com todas as cores disponíveis em seus vizinhos, logo, a única maneira de colorir tal vértice é incluindo mais uma cor. Dessa forma, naturalmente aparece a necessidade de evitar tal situação indesejada, o que é feito pela tentativa de visitar, e colorir, todos os vértices com grau de saturação alto, reduzindo, assim, o risco de precisar adicionar uma nova cor e, consequentemente, não encontrar solução para o Sudoku, caso ultrapasse o limite de N cores.
 
 ### **2.3 Estruturas de dados:**
 
@@ -101,7 +103,7 @@ Para a resolução do problema implementou-se duas funções que concentram a l�
 
 ### **2.5 Compilador:**
 
-O compilador usado foi o GNU Compiler Collection, comando `g++` com a flag `-std=c++14` especificando o padrão da linguagem utilizado.
+- O compilador usado foi o GNU Compiler Collection, comando `g++` com a flag `-std=c++14` especificando o padrão da linguagem utilizado.
 
 ## 3 Análise de Complexidade:
 
@@ -116,9 +118,12 @@ Para realizar tal análise, considere a descrição da transformação e heurís
 - **Heuristica:**
 
   - A heurística consiste em escolher uma cor para cada vértice, portanto, iteramos sobre os vértices do grafo G = (V, E) onde |V| = N\*N e N é a ordem da instância do Sudoku. Então executamos as seguintes operações `O(N^2)` vezes:
+
     - achar o vértice que tenha o maior grau de saturação, tal tarefa necessita uma nova iteração sobre os vértices, armazenando o índice do vértice que apresenta o maior grau, `O(N^2)`.
+
     - achar a menor cor disponível para o vértice encontrado, v, o que é feito iterando sobre os vizinhos de v e encontrando uma cor `c` a tal que nenhum vértice adjacente a v esteja colorido com `c`, `O(N^2)`.
-  - A complexidade assintótica total é dada pela soma das duas operações: `O(N^2*N^2) + O(N^2*N^2) = O(N^4)`
+
+  - A complexidade assintótica total é dada pela soma das duas operações: `O(N^2*N^2) + O(N^2*N^2) = O(N^4)`.
 
 ### **3.2 Espaço:**
 
@@ -132,54 +137,32 @@ Para realizar tal análise, considere a descrição da transformação e heurís
 
 ## **4 Análise Experimental:**
 
-- **Guloso:**
+- A análise experimental foi feita executando o programa para diferentes entradas e coletando a média e desvio padrão do tempo de execução com 50 testes para cada entrada.
 
-  - Percebe-se que, de fato, a complexidade de tempo de execução é limitada superiormente por `O(M log M)`, tal comportamento pode ser ilustrado no gráfico abaixo, onde foi registrado a média e o desvio padrão dos tempos de execução para 20 testes com o número de ilhas fixo e valor disponível, custos e pontuações variadas.
-
-  - **OBS**: este cenário foi repetido para `M = 1000, 2000, 3000, . . . , 50000`, gerando o grafico abaixo.
+- Embora a entrada máxima (N=9) tenha um tamanho consideravelmente pequeno para influênciar no tempo de execução, percebe-se, por meio de uma análise empírica, que de fato conforme aumentamos a ordem da matriz do Sudoku, o tempo médio de execução também tende a aumentar como visto no gráfico abaixo.
 
 <center>
 
-<img src="https://github.com/flaviolc18/tps/blob/master/paradigms/doc/images/greedy2.png?raw=true"/>
+<img src="images/bar-mean.png"/>
   
 </center>
 
-- Além disso, percebe-se que para diferentes valores de `valor maximo disponível` a complexidade assintótica não muda, o que evidencia que a complexidade do tempo de execução depende apenas do número de ilhas e é `O(M log M)`, ou seja, não depende de `N`.
-
-- **OBS**: valores de `M` e `N` estão invertidos na legenda do gráfico. Ou seja, somente neste caso, `N` representa o número de ilhas e `M` o valor disponivel.
+- Além disso, percebe-se que desvio padrão apresenta um comportamento similar para as quatro instâncias do problema, o que era de se esperar uma vez que este se encontra sob a influências das mesmas váriaveis que desempenham um papel na sua possível alteração.
 
 <center>
 
-<img src="https://github.com/flaviolc18/tps/blob/master/paradigms/doc/images/greedy3.png?raw=true"/>
-
+<img src="images/bar-std.png"/>
+  
 </center>
 
-- **Programação Dinâmica:**
+- **Quais os formatos de tabela do Sudoku (4x4, 9x9, etc..) a heurı́stica adotada
+  obteve melhores soluções?**
 
-  - Da mesma forma, avaliamos que a complexidade do tempo de execução do segundo algoritmo é limitada superiormente por `O(M * N)`, o que pode ser comprovado pela ilustração no gráfico abaixo, onde foi registrado a média dos tempos de execução para 10 testes com o número de ilhas (`M`) fixo e valor disponível (`N`) em função de `M`, custos e pontuações foram variados aleatóriamente.
-
-  - **OBS**: este cenário foi repetido para `M = 100, 200, 300, . . . , 1000`, gerando o grafico abaixo.
-
-<center>
-
-<img src="https://github.com/flaviolc18/tps/blob/master/paradigms/doc/images/dp-mean.png?raw=true"/>
-
-</center>
-
-- Avaliamos também o comportamento do desvio padrão para as médias representadas acima. O que, embora pareça ser um pouco caótico, demonstra-se muito pequeno para influenciar no comportamento das médias.
-
-<center>
-
-<img src="https://github.com/flaviolc18/tps/blob/master/paradigms/doc/images/dp-std.png?raw=true"/>
-
-</center>
-
-- **Conhecer mais lugares X Tempo de estadia no local:**
-  - Conclui-se, portanto, que para maximizar o número de ilhas visitadas o algoritmo com programação dinâmica de fato possui uma melhor abordagem uma vez que este não considera a repetição de ilhas para dois dias diferentes e sempre dá preferência para a solução que maximiza a quantidade total de pontos obtidos. Por outro lado, quando o interesse é maximizar o tempo de estadia no local, o algoritmo guloso demonstra retornar uma melhor solução, pois este opta sempre pela ilha com o melhor custo x benefício e fica, nesta, o máximo de dias possível.
+  - Observando os resultados obtidos, bem como as saídas indicando se dada instância existe solução ou não, percebeu-se que para instâncias de ordem pequena (4) a heurística, no geral, apresenta soluções na maioria das vezes bem como um tempo de execução menor. Portanto, conclui-se que os melhores formatos para a execução da heurística são os menores, ou seja, 4x4.
 
 ## 5 Conclusão:
 
-- O trabalho prático proposto foi de grande utilidade para exercitar a implementação dos paradigmas de programação vistos em aula e o melhor entendimento de como estes podem ser usados para a solução de possíveis problemas da vida real. Além disso, compreender o comportamento de tais algoritmos baseando-se em sua análise de complexidade e prova de corretude.
+- O trabalho prático proposto foi de grande utilidade para exercitar a implementação das reduções polinomiais vistas em aula e o melhor entendimento de como estes podem ser usados para a solução de possíveis problemas da vida real por meio de heurísticas que funcionam para a maioria dos casos. Além disso, compreender o comportamento de tais algoritmos e heurísticas baseando-se em sua análise de complexidade de tempo e espaço.
 
 ## 6 Bibliografia:
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <fstream>
 
 #define MAX 9
 
@@ -151,16 +152,22 @@ bool color_graph(int graph[][MAX * MAX], int colors[], int N)
 
 int main(int argc, char **argv)
 {
+  if (argc < 2)
+    return 0;
+
+  std::ifstream file;
+  file.open(argv[1]);
+
   int N, I, J;
 
-  cin >> N >> I >> J;
+  file >> N >> I >> J;
 
   int matrix[MAX][MAX] = {0};
   int graph[MAX * MAX][MAX * MAX] = {0};
 
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++)
-      cin >> matrix[i][j];
+      file >> matrix[i][j];
 
   int colors[MAX * MAX] = {0};
 

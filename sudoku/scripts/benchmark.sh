@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ]; then
-  echo "usage: bash benchmark.sh [executable] [algorithm]"
+if [ "$#" -ne 1 ]; then
+  echo "usage: bash benchmark.sh [executable]"
   exit 2
 fi
 
@@ -14,43 +14,41 @@ BASEDIR=$(pwd)
 SCRIPTDIR="$BASEDIR/scripts"
 TESTDIR="$BASEDIR/test"
 TESTFILE="$TESTDIR/t.txt"
-LOGFILE="$TESTDIR/log_$2.json"
+LOGFILE="$TESTDIR/log.json"
+INDIR="$BASEDIR/test/dataset2/in"
 
 mkdir -p $TESTDIR
 
 echo "runnig benchmarks..."
 echo "[" >$LOGFILE
 
-[[ $2 = "pd" ]] && min=100 || min=1000
-[[ $2 = "pd" ]] && max=1000 || max=50000
-[[ $2 = "pd" ]] && step=100 || step=1000
-[[ $2 = "pd" ]] && numtests=10 || numtests=15
-[[ $2 = "pd" ]] && times=3 || times=1
+Ns=(4 6 8 9)
+Rs=(2 3 4 3)
+Cs=(2 2 2 3)
+FILES=(441.txt  661.txt  881.txt  991.txt)
 
-for i in $(eval echo "{$min..$max..$step}"); do
-  for k in $(eval echo "{1..$times}") ; do
-  echo {\"n\": $i, \"m\": $((100*(i / k))), \"t\":[ >>$LOGFILE
-  echo "running for M = $i and N = $((100*(i / k)))"
-    for j in $(eval echo "{1..$numtests}"); do
-      
-      python3 $SCRIPTDIR/gerador.py $i $((100*(i / k))) >$TESTFILE
-      # date +%s%N returns the number of seconds since the epoch + current nanoseconds.
-      ts=$(date +%s%N)
-      result=$($1 $TESTFILE)
-      elapsed=$((($(date +%s%N) - $ts) / 1000)) # time in microseconds
-      if (($j != $numtests)); then
-        echo "$elapsed," >>$LOGFILE
-      else
-        echo "$elapsed" >>$LOGFILE
-      fi
-    done
-    rm $TESTFILE
-    if [[($i == $max && $k == $times)]]; then
-      echo "]}" >>$LOGFILE
+for j in {0..3}; do
+  echo "running for N = ${Ns[j]} I = ${Rs[j]} J = ${Cs[j]}"
+  echo {\"N\": ${Ns[j]}, \"I\":${Rs[j]}, \"J\":${Cs[j]}, \"t\":[ >>$LOGFILE
+  
+  for i in {1..30}; do
+    ts=$(date +%s%N)
+    result=$($1 < $INDIR/${FILES[j]})
+    elapsed=$((($(date +%s%N) - $ts) / 1000))
+    echo $result
+
+    if (($i != 30)); then
+      echo "$elapsed," >>$LOGFILE
     else
-      echo "]}," >>$LOGFILE
+      echo "$elapsed" >>$LOGFILE
     fi
   done
+  if (($j == 3)); then
+    echo "]}" >>$LOGFILE
+  else
+    echo "]}," >>$LOGFILE
+  fi
 done
+
 echo "]" >>$LOGFILE
 echo "results generated at $LOGFILE"
